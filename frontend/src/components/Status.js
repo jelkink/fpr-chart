@@ -1,9 +1,10 @@
 function Status(props) {
 
-    return
-        <div class="status">
+    return (
+        <div name="status">
             {props.message}
         </div>
+    )
 };
 
 export default Status;

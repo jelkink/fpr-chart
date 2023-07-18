@@ -1,8 +1,14 @@
 function Canvas(props) {
 
+    const data = props.data;
+
     return (
         <div id="canvas">
-            The graph will appear here.
+            {data ? (
+                <canvas id="chart" width="600" height="400"></canvas>
+            ) : (
+                <p>The graph will appear here.</p>
+            )}
         </div>
     )
 };
