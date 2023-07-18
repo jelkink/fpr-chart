@@ -3,7 +3,22 @@ body {
 }
 
 #App {
+}
+
+#header {
   text-align: center;
+}
+
+#main {
+  display: flex;
+}
+
+#left-bar {
+  flex: 1;
+}
+
+#canvas {
+  flex: 3;
 }
 
 .status {

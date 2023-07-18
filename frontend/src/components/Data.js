@@ -19,7 +19,7 @@ Data.prototype.load = async function() {
 }
 
 Data.prototype.getVariables = function() {
-    return this.data.variables.join(", ");
+    return this.data.variables;
 }
 
 export default Data;
