@@ -28,6 +28,19 @@ function tabulate(variable) {
     }
 };
 
+function pair(x, y) {
+
+    var paired = [];
+
+    console.log(x);
+
+    for (var i = 0; i < x.values.length; i++) {
+        paired.push({x: x.values[i], y: y.values[i]});
+    }
+
+    return paired;
+};
+
 const colors = ["blue", "red", "yellow", "green"];
 
 class Plot {
@@ -61,6 +74,18 @@ class Plot {
                 });
             };
 
+            if (graph === "scatter" & depvar !== "" & indepvar != "") {
+
+                const paired = pair(props.data[indepvar], props.data[depvar]);
+
+                console.log(paired);
+
+                ds.push({
+                    label: props.data[depvar].label + " by " + props.data[indepvar].label,
+                    data: paired,
+                });
+            };
+
             if (ds.length > 0) {
 
                 const data = {
@@ -73,7 +98,7 @@ class Plot {
                     data: data,
                     options: {
                         title: {
-                            text: props.data[depvar].label,
+                            text: ds[0].label,
                             display: true,
                         },
                         legend: {
