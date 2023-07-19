@@ -6,7 +6,7 @@ import Header from "./components/Header";
 import Form from "./components/Form";
 import Canvas from "./components/Canvas";
 import Status from "./components/Status";
-import Plot from "./components/Plot";
+import Plot from "./library/Plot";
 
 function App() {
 

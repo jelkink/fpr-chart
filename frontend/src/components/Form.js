@@ -15,6 +15,8 @@ function Form(props) {
     const [graph, setGraph] = useState(null);
     const [depvar, setDepvar] = useState(null);
     const [indepvar, setIndepvar] = useState(null);
+    const [jitter, setJitter] = useState(false);
+    const [jitter_sd, setJitterSD] = useState(10);
 
     function changeGraph(event) {
 
@@ -31,6 +33,18 @@ function Form(props) {
     function changeIndepvar(event) {
 
         setIndepvar(event.target.value);
+        props.plot.update(props.data);
+    };
+
+    function changeJitter(event) {
+
+        setJitter(event.target.checked);
+        props.plot.update(props.data);
+    };
+
+    function changeJitterSD(event) {
+
+        setJitterSD(event.target.value);
         props.plot.update(props.data);
     };
 
@@ -67,6 +81,15 @@ function Form(props) {
                                 <option value="" key="0"></option>
                                 {variablesToOptions(props.data)}
                             </select>
+                        </td>
+                     </tr>
+
+                     <tr>
+                        <td>
+                            <input type="checkbox" id="jitter" onChange={changeJitter} /> Jitter
+                        </td>
+                        <td>
+                            <input type="range" id="jitter-sd" onChange={changeJitterSD} min="0" max="500" value={jitter_sd} />
                         </td>
                      </tr>
                 </tbody></table>

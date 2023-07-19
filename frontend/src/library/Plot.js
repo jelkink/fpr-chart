@@ -1,4 +1,5 @@
 import Chart from "chart.js";
+import rand_normal from "../library/Stats";
 
 function tabulate(variable) {
 
@@ -27,10 +28,24 @@ function tabulate(variable) {
 
 function pair(x, y) {
 
+    const jitter = document.getElementById("jitter").checked;
+    const jitter_sd = document.getElementById("jitter-sd").value;
+
     var paired = [];
 
-    for (var i = 0; i < x.values.length; i++) {
-        paired.push({x: x.values[i], y: y.values[i]});
+    console.log(jitter);
+
+    if (jitter) {
+        for (var i = 0; i < x.values.length; i++) {
+
+            var newx = rand_normal(x.values[i], jitter_sd / 100.0);
+            var newy = rand_normal(y.values[i], jitter_sd / 100.0);
+            paired.push({x: newx, y: newy});
+        }
+    } else {
+        for (var i = 0; i < x.values.length; i++) {
+            paired.push({x: x.values[i], y: y.values[i]});
+        }
     }
 
     return paired;
@@ -110,13 +125,10 @@ class Plot {
                 if (this.chart === null) {
                     this.chart = new Chart(ctx, config);
                 } else {
-                    if (this.chart.config.type === config.type) {
-                        this.chart.data = data;
-                        this.chart.config = config;
-                        this.chart.update();
-                    } else {
-
-                    }
+                    this.chart.data = data;
+                    this.chart.type = graph;
+                    this.chart.config = config;
+                    this.chart.update();
                 }
             } else {
                 if (this.chart !== null) {
