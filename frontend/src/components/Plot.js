@@ -19,6 +19,10 @@ const colors = ["blue", "red", "yellow", "green"];
 
 class Plot {
 
+    constructor() {
+        this.chart = null;
+    }
+
     update(props) {
 
         const ctx = document.getElementById("chart");
@@ -65,9 +69,17 @@ class Plot {
                 },
             };
 
-            console.log(config);
+            if (this.chart === null) {
+                this.chart = new Chart(ctx, config);
+            } else {
+                if (this.chart.config.type == config.type) {
+                    this.chart.data.labels = data.labels;
+                    this.chart.data.dataset = data.datasets;
+                    this.chart.update();
+                } else {
 
-            new Chart(ctx, config); // this should only be generated once, using updates later
+                }
+            }
         }
     };
 };
