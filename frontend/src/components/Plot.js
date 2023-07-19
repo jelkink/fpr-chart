@@ -15,11 +15,13 @@ function tabulate(x) {
     return table;
 };
 
+const colors = ["blue", "red", "yellow", "green"];
+
 class Plot {
 
     update(props) {
 
-        const ctx = document.getElementById("myChart");
+        const ctx = document.getElementById("chart");
 
         const graph = document.getElementById("graph");
         const depvar = document.getElementById("depvar");
@@ -31,7 +33,7 @@ class Plot {
 
             var ds = [];
 
-            if (graph.value == "bar" & depvar.value != "") {
+            if (graph.value === "bar" & depvar.value !== "") {
 
                 const table = tabulate(dataset.data[depvar.value]);
 
@@ -39,11 +41,13 @@ class Plot {
                     labels: Object.keys(table),
                     data: Object.values(table),
                     label: depvar.value,
+                    backgroundColor: colors[ds.length],
                     borderWidth: 1,
                 });
             };
 
             const data = {
+                labels: ds[0].labels,
                 datasets: ds,
             };
 
@@ -52,16 +56,18 @@ class Plot {
                 data: data,
                 options: {
                     scales: {
-                        y: {
-                            beginAtZero: true
-                        }
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true,
+                            }
+                        }]
                     }
                 },
             };
 
             console.log(config);
 
-            // new Chart(ctx, config);
+            new Chart(ctx, config); // this should only be generated once, using updates later
         }
     };
 };
