@@ -1,18 +1,31 @@
 import Chart from "chart.js";
 
-function tabulate(x) {
+function tabulate(variable) {
+
+    console.log(variable);
 
     var table = {};
 
-    for (var i = 0; i < x.length; i++) {
-        if (table[x[i].toString()] >= 0) {
-            table[x[i].toString()] += 1;
+    for (var i = 0; i < variable.values.length; i++) {
+        if (table[variable.values[i].toString()] >= 0) {
+            table[variable.values[i].toString()] += 1;
         } else {
-            table[x[i].toString()] = 0;
+            table[variable.values[i].toString()] = 0;
         }
     }
 
-    return table;
+    if (variable.labels) {
+        var labelled_table = {};
+
+        for (let i in variable.labels) {
+            console.log(variable.labels[i], "=", table[i]);
+            labelled_table[variable.labels[i]] = table[i];
+        }
+
+        return labelled_table;
+    } else {
+        return table;
+    }
 };
 
 const colors = ["blue", "red", "yellow", "green"];
@@ -27,57 +40,71 @@ class Plot {
 
         const ctx = document.getElementById("chart");
 
-        const graph = document.getElementById("graph");
-        const depvar = document.getElementById("depvar");
-        const indepvar = document.getElementById("indepvar");
+        const graph = document.getElementById("graph").value;
+        const depvar = document.getElementById("depvar").value;
+        const indepvar = document.getElementById("indepvar").value;
 
         if (graph) {
 
-            const dataset = props.data;
-
             var ds = [];
 
-            if (graph.value === "bar" & depvar.value !== "") {
+            if (graph === "bar" & depvar !== "") {
 
-                const table = tabulate(dataset.data[depvar.value]);
+                const table = tabulate(props.data[depvar]);
 
                 ds.push({
                     labels: Object.keys(table),
                     data: Object.values(table),
-                    label: depvar.value,
+                    label: props.data[depvar].label,
                     backgroundColor: colors[ds.length],
                     borderWidth: 1,
                 });
             };
 
-            const data = {
-                labels: ds[0].labels,
-                datasets: ds,
-            };
+            if (ds.length > 0) {
 
-            const config = {
-                type: graph.value,
-                data: data,
-                options: {
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: true,
-                            }
-                        }]
-                    }
-                },
-            };
+                const data = {
+                    labels: ds[0].labels,
+                    datasets: ds,
+                };
 
-            if (this.chart === null) {
-                this.chart = new Chart(ctx, config);
-            } else {
-                if (this.chart.config.type == config.type) {
-                    this.chart.data.labels = data.labels;
-                    this.chart.data.dataset = data.datasets;
-                    this.chart.update();
+                const config = {
+                    type: graph,
+                    data: data,
+                    options: {
+                        title: {
+                            text: props.data[depvar].label,
+                            display: true,
+                        },
+                        legend: {
+                            display: false,
+                        },
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true,
+                                }
+                            }]
+                        }
+                    },
+                };
+
+                if (this.chart === null) {
+                    this.chart = new Chart(ctx, config);
                 } else {
+                    if (this.chart.config.type == config.type) {
+                        this.chart.data = data;
+                        this.chart.config = config;
+                        this.chart.update();
+                    } else {
 
+                    }
+                }
+
+                console.log(this.chart);
+            } else {
+                if (this.chart !== null) {
+                    this.chart.display = false;
                 }
             }
         }
