@@ -2,8 +2,6 @@ import Chart from "chart.js";
 
 function tabulate(variable) {
 
-    console.log(variable);
-
     var table = {};
 
     for (var i = 0; i < variable.values.length; i++) {
@@ -18,7 +16,6 @@ function tabulate(variable) {
         var labelled_table = {};
 
         for (let i in variable.labels) {
-            console.log(variable.labels[i], "=", table[i]);
             labelled_table[variable.labels[i]] = table[i];
         }
 
@@ -31,8 +28,6 @@ function tabulate(variable) {
 function pair(x, y) {
 
     var paired = [];
-
-    console.log(x);
 
     for (var i = 0; i < x.values.length; i++) {
         paired.push({x: x.values[i], y: y.values[i]});
@@ -77,8 +72,6 @@ class Plot {
             if (graph === "scatter" & depvar !== "" & indepvar != "") {
 
                 const paired = pair(props.data[indepvar], props.data[depvar]);
-
-                console.log(paired);
 
                 ds.push({
                     label: props.data[depvar].label + " by " + props.data[indepvar].label,
@@ -125,8 +118,6 @@ class Plot {
 
                     }
                 }
-
-                console.log(this.chart);
             } else {
                 if (this.chart !== null) {
                     this.chart.display = false;
