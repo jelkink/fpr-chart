@@ -4,11 +4,7 @@ function Canvas(props) {
 
     return (
         <div id="canvas">
-            {data ? (
-                <canvas id="chart" width="600" height="400"></canvas>
-            ) : (
-                <p>The graph will appear here.</p>
-            )}
+            <canvas id="chart" width="400" height="300"></canvas>
         </div>
     )
 };
