@@ -69,7 +69,7 @@ class Plot {
                 });
             };
 
-            if (graph === "scatter" & depvar !== "" & indepvar != "") {
+            if (graph === "scatter" & depvar !== "" & indepvar !== "") {
 
                 const paired = pair(props.data[indepvar], props.data[depvar]);
 
@@ -110,7 +110,7 @@ class Plot {
                 if (this.chart === null) {
                     this.chart = new Chart(ctx, config);
                 } else {
-                    if (this.chart.config.type == config.type) {
+                    if (this.chart.config.type === config.type) {
                         this.chart.data = data;
                         this.chart.config = config;
                         this.chart.update();

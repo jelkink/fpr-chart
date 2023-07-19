@@ -30,7 +30,7 @@ function App() {
       {<Header />}
       <div id="main">
         {<Form data={data} plot={plot}/>}
-        {<Canvas data={data} plot={plot}/>}
+        {<Canvas/>}
       </div>
       {<Status message=""/>}
     </div>

@@ -1,6 +1,4 @@
-function Canvas(props) {
-
-    const data = props.data;
+function Canvas() {
 
     return (
         <div id="canvas">
