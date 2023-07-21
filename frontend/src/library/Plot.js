@@ -26,14 +26,51 @@ function tabulate(variable) {
     }
 };
 
+function bin(variable) {
+
+    const bins = document.getElementById("bins").value;
+
+    var table = [];
+    var labelled_table = {};
+    var idx = 0;
+    var min = Infinity;
+    var max = -Infinity;
+
+    for (var i = 0; i < variable.values.length; i++) {
+        if (variable.values[i] > max) {
+            max = variable.values[i];
+        }
+        if (variable.values[i] < min) {
+            min = variable.values[i];
+        }
+    }
+
+    var binsize = (max - min) / bins;
+    console.log(min, max, binsize, bins);
+
+    for (i = 0; i < bins; i++) {
+        table[i] = 0;
+    }
+
+    for (i = 0; i < variable.values.length; i++) {
+        idx = variable.values[i] === max ? bins-1 : Math.floor((variable.values[i] - min) / binsize);
+        table[idx] += 1;
+    }
+
+    for (i = 0; i < bins; i++) {
+        
+        labelled_table["[" + Math.round(min + i * binsize) + "-" + Math.round(min + (i+1) * binsize) + ")"] = table[i];
+    }
+
+    return labelled_table;
+};
+
 function pair(x, y) {
 
     const jitter = document.getElementById("jitter").checked;
     const jitter_sd = document.getElementById("jitter-sd").value;
 
     var paired = [];
-
-    console.log(jitter);
 
     if (jitter) {
         for (var i = 0; i < x.values.length; i++) {
@@ -84,6 +121,19 @@ class Plot {
                 });
             };
 
+            if (graph === "histogram" & depvar !== "") {
+
+                const table = bin(props.data[depvar]);
+
+                ds.push({
+                    labels: Object.keys(table),
+                    data: Object.values(table),
+                    label: props.data[depvar].label,
+                    backgroundColor: colors[ds.length],
+                    borderWidth: 1,
+                });
+            };
+
             if (graph === "scatter" & depvar !== "" & indepvar !== "") {
 
                 const paired = pair(props.data[indepvar], props.data[depvar]);
@@ -102,7 +152,7 @@ class Plot {
                 };
 
                 const config = {
-                    type: graph,
+                    type: (graph === "histogram" ? "bar" : graph),
                     data: data,
                     options: {
                         title: {

@@ -17,6 +17,7 @@ function Form(props) {
     const [indepvar, setIndepvar] = useState(null);
     const [jitter, setJitter] = useState(false);
     const [jitter_sd, setJitterSD] = useState(10);
+    const [bins, setBins] = useState(10);
 
     function changeGraph(event) {
 
@@ -48,6 +49,12 @@ function Form(props) {
         props.plot.update(props.data);
     };
 
+    function changeBins(event) {
+
+        setBins(event.target.value);
+        props.plot.update(props.data);
+    }
+
     return (
         <div id="left-bar">
             <h2>Options</h2>
@@ -61,6 +68,7 @@ function Form(props) {
                             <select id="graph" onChange={changeGraph}>
                                 <option value="bar">barchart</option>
                                 <option value="scatter">scatterplot</option>
+                                <option value="histogram">histogram</option>
                             </select>
                         </td>
                     </tr>
@@ -84,6 +92,7 @@ function Form(props) {
                         </td>
                      </tr>
 
+                    {graph === "scatter" ? (
                      <tr>
                         <td>
                             <input type="checkbox" id="jitter" onChange={changeJitter} /> Jitter
@@ -91,7 +100,18 @@ function Form(props) {
                         <td>
                             <input type="range" id="jitter-sd" onChange={changeJitterSD} min="0" max="500" value={jitter_sd} />
                         </td>
+                    </tr>
+                    ) : (<tr></tr>)}
+
+                    {graph === "histogram" ? (
+                    <tr>
+                        <td>Bins</td>
+                        <td>
+                            <input type="range" id="bins" onChange={changeBins} min="1" max="20" value={bins} />
+                        </td>
                      </tr>
+                    ) : (<tr></tr>)}
+
                 </tbody></table>
             </form>
             ) : (
