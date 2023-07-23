@@ -1,4 +1,4 @@
-import Chart from "chart.js";
+import Chart from "chart.js/auto";
 import rand_normal from "../library/Stats";
 
 function tabulate(variable) {
@@ -46,7 +46,6 @@ function bin(variable) {
     }
 
     var binsize = (max - min) / bins;
-    console.log(min, max, binsize, bins);
 
     for (i = 0; i < bins; i++) {
         table[i] = 0;
@@ -71,16 +70,17 @@ function pair(x, y) {
     const jitter_sd = document.getElementById("jitter-sd").value;
 
     var paired = [];
+    var i;
 
     if (jitter) {
-        for (var i = 0; i < x.values.length; i++) {
+        for (i = 0; i < x.values.length; i++) {
 
             var newx = rand_normal(x.values[i], jitter_sd / 100.0);
             var newy = rand_normal(y.values[i], jitter_sd / 100.0);
             paired.push({x: newx, y: newy});
         }
     } else {
-        for (var i = 0; i < x.values.length; i++) {
+        for (i = 0; i < x.values.length; i++) {
             paired.push({x: x.values[i], y: y.values[i]});
         }
     }
@@ -163,11 +163,11 @@ class Plot {
                             display: false,
                         },
                         scales: {
-                            yAxes: [{
+                            y: {
                                 ticks: {
                                     beginAtZero: true,
                                 }
-                            }]
+                            }
                         }
                     },
                 };
@@ -176,8 +176,8 @@ class Plot {
                     this.chart = new Chart(ctx, config);
                 } else {
                     this.chart.data = data;
-                    this.chart.type = graph;
-                    this.chart.config = config;
+                    this.chart.type = (graph === "histogram" ? "bar" : graph);
+                    this.chart.options = config.options;
                     this.chart.update();
                 }
             } else {

@@ -92,7 +92,6 @@ function Form(props) {
                         </td>
                      </tr>
 
-                    {graph === "scatter" ? (
                      <tr>
                         <td>
                             <input type="checkbox" id="jitter" onChange={changeJitter} /> Jitter
@@ -101,17 +100,14 @@ function Form(props) {
                             <input type="range" id="jitter-sd" onChange={changeJitterSD} min="0" max="500" value={jitter_sd} />
                         </td>
                     </tr>
-                    ) : (<tr></tr>)}
-
-                    {graph === "histogram" ? (
+                    
                     <tr>
                         <td>Bins</td>
                         <td>
                             <input type="range" id="bins" onChange={changeBins} min="1" max="20" value={bins} />
                         </td>
                      </tr>
-                    ) : (<tr></tr>)}
-
+                    
                 </tbody></table>
             </form>
             ) : (
