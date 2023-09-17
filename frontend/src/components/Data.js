@@ -1,5 +1,5 @@
 function Data() {
-    
+
     this.data = null;
     this.filename = "test"
 }
@@ -7,7 +7,7 @@ function Data() {
 Data.prototype.changeFile = async function(name) {
 
     this.filename = name;
-    this.load();
+    await this.load();
 }
 
 Data.prototype.load = async function() {
@@ -24,8 +24,16 @@ Data.prototype.load = async function() {
     console.log("Data ready");
 }
 
-Data.prototype.getVariables = function() {
+Data.prototype.getVariableNames = function() {
     return Object.keys(this.data);
+}
+
+Data.prototype.hasVariable = function(v) {
+    return Object.keys(this.data).includes(v);
+}
+
+Data.prototype.getVariable = function(v) {
+    return this.data[v];
 }
 
 export default Data;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 function Form(props) {
-    const [selectedDataSet, setSelectedDataSet] = useState('');
+    const [selectedDataSet, setSelectedDataSet] = useState('test');
     const [selectedGraph, setSelectedGraph] = useState('');
     const [selectedDepvar, setSelectedDepvar] = useState('');
     const [selectedIndepvar, setSelectedIndepvar] = useState('');
@@ -9,7 +9,7 @@ function Form(props) {
     const [jitter_sd, setJitterSD] = useState(10);
     const [bins, setBins] = useState(10);
 
-    const dataSets = ["", "test", "ines_2020"];
+    const dataSets = ["test", "ines_2020"];
     const graphs = ["", "bar", "scatter", "histogram"];
 
     useEffect(() => {
@@ -20,12 +20,14 @@ function Form(props) {
     useEffect((e) => {
 
         if (props.data) {
-            props.data.changeFile(selectedDataSet);
-        }
 
-        setSelectedGraph('');
-        setSelectedDepvar('');
-        setSelectedIndepvar('');
+            props.data.changeFile(selectedDataSet)
+                .then(() => {
+                    setSelectedGraph('');
+                    setSelectedDepvar(props.data.getVariableNames()[1]);
+                    setSelectedIndepvar(props.data.getVariableNames()[1]);
+                });
+        }
     }, [selectedDataSet]);
 
     return (
@@ -63,7 +65,7 @@ function Form(props) {
                         <td>Dependent variable</td>
                         <td>
                             <select value={selectedDepvar} onChange={(e) => setSelectedDepvar(e.target.value)}>
-                                {props.data.getVariables().map((option, index) => (
+                                {props.data.getVariableNames().map((option, index) => (
                                     <option key={index} value={option}>
                                         {option}
                                     </option>
@@ -76,7 +78,7 @@ function Form(props) {
                         <td>Independent variable</td>
                         <td>
                             <select value={selectedIndepvar} onChange={(e) => setSelectedIndepvar(e.target.value)}>
-                                {props.data.getVariables().map((option, index) => (
+                                {props.data.getVariableNames().map((option, index) => (
                                     <option key={index} value={option}>
                                         {option}
                                     </option>

@@ -76,6 +76,7 @@ function pair(x, y, jitter, jitter_sd) {
         }
     } else {
         for (i = 0; i < x.values.length; i++) {
+
             paired.push({x: x.values[i], y: y.values[i]});
         }
     }
@@ -91,48 +92,56 @@ class Plot {
         this.chart = null;
     }
 
-    update(props, selectedGraph, selectedDepvar, selectedIndepvar, jitter, jitter_sd, bins) {
+    update(data, selectedGraph, selectedDepvar, selectedIndepvar, jitter, jitter_sd, bins) {
 
         const ctx = document.getElementById("chart");
+        var dv = null;
+        var iv = null;
 
         console.log("Updating plot (" + selectedGraph + ", DV:" + selectedDepvar + ", IV:" + selectedIndepvar + ")");
+
+        if (data) {
+            dv = (data.hasVariable(selectedDepvar) ? data.getVariable(selectedDepvar) : null);
+            iv = (data.hasVariable(selectedIndepvar) ? data.getVariable(selectedIndepvar) : null);
+        }
 
         if (selectedGraph) {
 
             var ds = [];
 
-            if (selectedGraph === "bar" & selectedDepvar !== "") {
+            if (selectedGraph === "bar" & dv !== null) {
 
-                const table = tabulate(props.data[selectedDepvar]);
+                const table = tabulate(dv);
 
                 ds.push({
                     labels: Object.keys(table),
                     data: Object.values(table),
-                    label: props.data[selectedDepvar].label,
+                    label: dv.label,
                     backgroundColor: colors[ds.length],
                     borderWidth: 1,
                 });
             };
 
-            if (selectedGraph === "histogram" & selectedDepvar !== "") {
+            if (selectedGraph === "histogram" & dv !== null) {
 
-                const table = bin(props.data[selectedDepvar], bins);
+                const table = bin(dv, bins);
 
                 ds.push({
                     labels: Object.keys(table),
                     data: Object.values(table),
-                    label: props.data[selectedDepvar].label,
+                    label: dv.label,
                     backgroundColor: colors[ds.length],
                     borderWidth: 1,
                 });
             };
 
-            if (selectedGraph === "scatter" & selectedDepvar !== "" & selectedIndepvar !== "") {
+            if (selectedGraph === "scatter" & dv !== null & iv !== null) {
 
-                const paired = pair(props.data[selectedIndepvar], props.data[selectedDepvar], jitter, jitter_sd);
+                console.log("IV: ", iv);
+                const paired = pair(iv, dv, jitter, jitter_sd);
 
                 ds.push({
-                    label: props.data[selectedDepvar].label + " by " + props.data[selectedIndepvar].label,
+                    label: dv.label + " by " + iv.label,
                     data: paired,
                 });
             };
