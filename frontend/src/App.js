@@ -11,7 +11,8 @@ import Plot from "./library/Plot";
 function App() {
 
   const [data, setData] = useState(null);
-  const [plot, setPlot] = useState(new Plot());
+  
+  const plot = new Plot();
 
   useEffect(() => {
       async function fetchData() {

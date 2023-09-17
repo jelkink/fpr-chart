@@ -26,9 +26,7 @@ function tabulate(variable) {
     }
 };
 
-function bin(variable) {
-
-    const bins = document.getElementById("bins").value;
+function bin(variable, bins) {
 
     var table = [];
     var labelled_table = {};
@@ -64,10 +62,7 @@ function bin(variable) {
     return labelled_table;
 };
 
-function pair(x, y) {
-
-    const jitter = document.getElementById("jitter").checked;
-    const jitter_sd = document.getElementById("jitter-sd").value;
+function pair(x, y, jitter, jitter_sd) {
 
     var paired = [];
     var i;
@@ -96,50 +91,48 @@ class Plot {
         this.chart = null;
     }
 
-    update(props) {
+    update(props, selectedGraph, selectedDepvar, selectedIndepvar, jitter, jitter_sd, bins) {
 
         const ctx = document.getElementById("chart");
 
-        const graph = document.getElementById("graph").value;
-        const depvar = document.getElementById("depvar").value;
-        const indepvar = document.getElementById("indepvar").value;
+        console.log("Updating plot (" + selectedGraph + ", DV:" + selectedDepvar + ", IV:" + selectedIndepvar + ")");
 
-        if (graph) {
+        if (selectedGraph) {
 
             var ds = [];
 
-            if (graph === "bar" & depvar !== "") {
+            if (selectedGraph === "bar" & selectedDepvar !== "") {
 
-                const table = tabulate(props.data[depvar]);
+                const table = tabulate(props.data[selectedDepvar]);
 
                 ds.push({
                     labels: Object.keys(table),
                     data: Object.values(table),
-                    label: props.data[depvar].label,
+                    label: props.data[selectedDepvar].label,
                     backgroundColor: colors[ds.length],
                     borderWidth: 1,
                 });
             };
 
-            if (graph === "histogram" & depvar !== "") {
+            if (selectedGraph === "histogram" & selectedDepvar !== "") {
 
-                const table = bin(props.data[depvar]);
+                const table = bin(props.data[selectedDepvar], bins);
 
                 ds.push({
                     labels: Object.keys(table),
                     data: Object.values(table),
-                    label: props.data[depvar].label,
+                    label: props.data[selectedDepvar].label,
                     backgroundColor: colors[ds.length],
                     borderWidth: 1,
                 });
             };
 
-            if (graph === "scatter" & depvar !== "" & indepvar !== "") {
+            if (selectedGraph === "scatter" & selectedDepvar !== "" & selectedIndepvar !== "") {
 
-                const paired = pair(props.data[indepvar], props.data[depvar]);
+                const paired = pair(props.data[selectedIndepvar], props.data[selectedDepvar], jitter, jitter_sd);
 
                 ds.push({
-                    label: props.data[depvar].label + " by " + props.data[indepvar].label,
+                    label: props.data[selectedDepvar].label + " by " + props.data[selectedIndepvar].label,
                     data: paired,
                 });
             };
@@ -152,7 +145,7 @@ class Plot {
                 };
 
                 const config = {
-                    type: (graph === "histogram" ? "bar" : graph),
+                    type: (selectedGraph === "histogram" ? "bar" : selectedGraph),
                     data: data,
                     options: {
                         title: {
@@ -176,7 +169,7 @@ class Plot {
                     this.chart = new Chart(ctx, config);
                 } else {
                     this.chart.data = data;
-                    this.chart.type = (graph === "histogram" ? "bar" : graph);
+                    this.chart.type = (selectedGraph === "histogram" ? "bar" : selectedGraph);
                     this.chart.options = config.options;
                     this.chart.update();
                 }

@@ -1,59 +1,32 @@
-import React, { useState } from "react";
-
-function variablesToOptions(data) {
-    const vars = data.getVariables();
-    const lines = [];
-
-    for (var i = 0; i < vars.length; i++) {
-        lines.push(<option value={vars[i]} key={i}>{vars[i]}</option>);
-    }
-
-    return lines;
-};
+import React, { useState, useEffect } from "react";
 
 function Form(props) {
-    const [graph, setGraph] = useState(null);
-    const [depvar, setDepvar] = useState(null);
-    const [indepvar, setIndepvar] = useState(null);
+    const [selectedDataSet, setSelectedDataSet] = useState('');
+    const [selectedGraph, setSelectedGraph] = useState('');
+    const [selectedDepvar, setSelectedDepvar] = useState('');
+    const [selectedIndepvar, setSelectedIndepvar] = useState('');
     const [jitter, setJitter] = useState(false);
     const [jitter_sd, setJitterSD] = useState(10);
     const [bins, setBins] = useState(10);
 
-    function changeGraph(event) {
+    const dataSets = ["", "test", "ines_2020"];
+    const graphs = ["", "bar", "scatter", "histogram"];
 
-        setGraph(event.target.value);
-        props.plot.update(props.data);
-    };
+    useEffect(() => {
 
-    function changeDepvar(event) {
+        props.plot.update(props.data, selectedGraph, selectedDepvar, selectedIndepvar, jitter, jitter_sd, bins);
+    }, [selectedGraph, selectedDepvar, selectedIndepvar, jitter, jitter_sd, bins]);
 
-        setDepvar(event.target.value);
-        props.plot.update(props.data);
-    };
+    useEffect((e) => {
 
-    function changeIndepvar(event) {
+        if (props.data) {
+            props.data.changeFile(selectedDataSet);
+        }
 
-        setIndepvar(event.target.value);
-        props.plot.update(props.data);
-    };
-
-    function changeJitter(event) {
-
-        setJitter(event.target.checked);
-        props.plot.update(props.data);
-    };
-
-    function changeJitterSD(event) {
-
-        setJitterSD(event.target.value);
-        props.plot.update(props.data);
-    };
-
-    function changeBins(event) {
-
-        setBins(event.target.value);
-        props.plot.update(props.data);
-    }
+        setSelectedGraph('');
+        setSelectedDepvar('');
+        setSelectedIndepvar('');
+    }, [selectedDataSet]);
 
     return (
         <div id="left-bar">
@@ -63,21 +36,38 @@ function Form(props) {
             <form name="options">
                 <table><tbody>
                     <tr>
+                        <td>Data set</td>
+                        <td>
+                            <select value={selectedDataSet} onChange={(e) => setSelectedDataSet(e.target.value)}>
+                                {dataSets.map((option, index) => (
+                                    <option key={index} value={option}>
+                                        {option}
+                                    </option>
+                                ))}
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
                         <td>Graph type</td>
                         <td>
-                            <select id="graph" onChange={changeGraph}>
-                                <option value="bar">barchart</option>
-                                <option value="scatter">scatterplot</option>
-                                <option value="histogram">histogram</option>
+                                <select value={selectedGraph} onChange={(e) => setSelectedGraph(e.target.value)}>
+                                {graphs.map((option, index) => (
+                                    <option key={index} value={option}>
+                                        {option}
+                                    </option>
+                                ))}
                             </select>
                         </td>
                     </tr>
                     <tr>
                         <td>Dependent variable</td>
                         <td>
-                            <select id="depvar" onChange={changeDepvar}>
-                                <option value="" key="0"> </option>
-                                {variablesToOptions(props.data)}
+                            <select value={selectedDepvar} onChange={(e) => setSelectedDepvar(e.target.value)}>
+                                {props.data.getVariables().map((option, index) => (
+                                    <option key={index} value={option}>
+                                        {option}
+                                    </option>
+                                ))}
                             </select>
                         </td>
                      </tr> 
@@ -85,26 +75,29 @@ function Form(props) {
                      <tr>
                         <td>Independent variable</td>
                         <td>
-                            <select id="indepvar" onChange={changeIndepvar}>
-                                <option value="" key="0"></option>
-                                {variablesToOptions(props.data)}
+                            <select value={selectedIndepvar} onChange={(e) => setSelectedIndepvar(e.target.value)}>
+                                {props.data.getVariables().map((option, index) => (
+                                    <option key={index} value={option}>
+                                        {option}
+                                    </option>
+                                ))}
                             </select>
                         </td>
                      </tr>
 
                      <tr>
                         <td>
-                            <input type="checkbox" id="jitter" onChange={changeJitter} /> Jitter
+                            <input type="checkbox" checked={jitter} onChange={() => setJitter(!jitter)}/> Jitter
                         </td>
                         <td>
-                            <input type="range" id="jitter-sd" onChange={changeJitterSD} min="0" max="500" value={jitter_sd} />
+                            <input type="range" value={jitter_sd} onChange={(e) => setJitterSD(parseInt(e.target.value))} min="0" max="500" />
                         </td>
                     </tr>
                     
                     <tr>
                         <td>Bins</td>
                         <td>
-                            <input type="range" id="bins" onChange={changeBins} min="1" max="20" value={bins} />
+                            <input type="range" value={bins} onChange={(e) => setBins(parseInt(e.target.value))} min="1" max="20" />
                         </td>
                      </tr>
                     
