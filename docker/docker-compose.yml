@@ -9,18 +9,6 @@ services:
     volumes:
       - webdata:/web
 
-  nginx:
-    build:
-      context: ..
-      dockerfile: ./docker/nginx/Dockerfile
-    volumes:
-      - webdata:/web
-    depends_on:
-      - builder
-    ports:
-      - "80:80"
-      - "443:443"
-
   frontend:
     container_name: frontend
     build:
@@ -32,6 +20,8 @@ services:
       - NODE_ENV=development
     depends_on:
       - builder
+    ports:
+      - "5000:5000"
 
 volumes:
     webdata:
