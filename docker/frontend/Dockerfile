@@ -1,6 +1,7 @@
 # base image
 FROM node:12.2.0-alpine
 
+RUN apk add git
 RUN ln -s /web/frontend /app
 
 # set working directory
@@ -15,9 +16,12 @@ RUN npm config set unsafe-perm true
 # install and cache app dependencies
 RUN npm install react-scripts@3.0.1 -g
 RUN npm install serve@11.3.1 -g
+RUN npm install
 
 # create production build
-#RUN npm run build
+RUN npm run build --production
+
+EXPOSE 5000
 
 # start app
-CMD ["serve", "-s", "-d"]
+CMD serve -s build
