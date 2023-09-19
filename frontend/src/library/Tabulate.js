@@ -1,4 +1,5 @@
 import rand_normal from "../library/Stats";
+import round from "../library/FormatUtils";
 
 function tabulate(variable) {
 
@@ -49,13 +50,13 @@ function bin(variable, bins) {
     }
 
     for (i = 0; i < variable.values.length; i++) {
-        idx = variable.values[i] === max ? bins-1 : Math.floor((variable.values[i] - min) / binsize);
+        idx = variable.values[i] > max - binsize ? bins-1 : Math.floor((variable.values[i] - min) / binsize);
         table[idx] += 1;
     }
 
     for (i = 0; i < bins; i++) {
         
-        labelled_table["[" + Math.round(min + i * binsize) + "-" + Math.round(min + (i+1) * binsize) + ")"] = table[i];
+        labelled_table[round(min + i * binsize, 2) + "-" + round(min + (i+1) * binsize, 2)] = table[i];
     }
 
     return labelled_table;

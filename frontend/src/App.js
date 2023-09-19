@@ -6,6 +6,7 @@ import Header from "./components/Header";
 import Form from "./components/Form";
 import Canvas from "./components/Canvas";
 import Status from "./components/Status";
+import Info from "./components/Info";
 import Plot from "./library/Plot";
 
 function App() {
@@ -30,10 +31,15 @@ function App() {
     <div id="App">
       {<Header />}
       <div id="main">
+        <div id="left">
         {<Form data={data} plot={plot}/>}
+        {<Status message=""/>}
+        </div>
         {<Canvas/>}
+        <div id="left">
+        {<Info message=""/>}
+        </div>
       </div>
-      {<Status message=""/>}
     </div>
   );
 }

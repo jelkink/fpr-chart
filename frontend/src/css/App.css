@@ -1,5 +1,5 @@
 body {
-  background-color: #e6f2ff;
+  background-color: #ffffff;
 }
 
 #header {
@@ -10,18 +10,24 @@ body {
   display: flex;
 }
 
-#left-bar {
+#left {
   flex: 1;
   margin-left: 20px;
   margin-right: 10px;
 }
 
 #canvas {
-  flex: 4;
+  flex: 2;
   margin-right: 20px;
   margin-top: 10px;
   margin-left: 10px;
   margin-bottom: 10px;
+}
+
+#right {
+  flex: 1;
+  margin-right: 20px;
+  margin-left: 10px;
 }
 
 .status {
@@ -37,3 +43,5 @@ body {
 .App-link {
   color: #61dafb;
 }
+
+

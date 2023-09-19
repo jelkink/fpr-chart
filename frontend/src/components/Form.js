@@ -86,10 +86,14 @@ function Form(props) {
                             </select>
                         </td>
                      </tr>
+                     
+                     <tr>
+                        <td height="20px"></td>
+                     </tr>
 
                      <tr>
                         <td>
-                            <input type="checkbox" checked={jitter} onChange={() => setJitter(!jitter)}/> Jitter
+                            Jitter <input type="checkbox" checked={jitter} onChange={() => setJitter(!jitter)}/> on/off
                         </td>
                         <td>
                             <input type="range" value={jitter_sd} onChange={(e) => setJitterSD(parseInt(e.target.value))} min="0" max="500" />

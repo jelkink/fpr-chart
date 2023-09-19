@@ -4,7 +4,7 @@ function Canvas() {
 
     return (
         <div id="canvas">
-            <canvas id="chart" width="400" height="300"></canvas>
+            <canvas id="chart" width="250" height="200"></canvas>
         </div>
     )
 };
