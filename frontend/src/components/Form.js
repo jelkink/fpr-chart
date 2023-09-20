@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 function Form(props) {
+
     const [selectedDataSet, setSelectedDataSet] = useState('test');
     const [selectedGraph, setSelectedGraph] = useState('');
     const [selectedDepvar, setSelectedDepvar] = useState('');
@@ -15,6 +16,7 @@ function Form(props) {
     useEffect(() => {
 
         props.plot.update(props.data, selectedGraph, selectedDepvar, selectedIndepvar, jitter, jitter_sd, bins);
+        props.info.updateVariableDescription(props.data, selectedDepvar, selectedIndepvar);
     }, [selectedGraph, selectedDepvar, selectedIndepvar, jitter, jitter_sd, bins]);
 
     useEffect((e) => {

@@ -36,4 +36,21 @@ Data.prototype.getVariable = function(v) {
     return this.data[v];
 }
 
+Data.prototype.getDescription = function(v) {
+
+    var res = v + ": ";
+
+    v = this.data[v];
+
+    res += v.label;
+
+    if (v.labels) {
+        res += "<br/><br/><ul>";
+        res += v.labels.map(({key, value}) => ("<li>" + key + ": " + value + "</li>"));
+        res += "</ul>";
+    }
+
+    return res;
+}
+
 export default Data;

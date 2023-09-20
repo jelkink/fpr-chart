@@ -5,7 +5,6 @@ import Data from "./components/Data"
 import Header from "./components/Header";
 import Form from "./components/Form";
 import Canvas from "./components/Canvas";
-import Status from "./components/Status";
 import Info from "./components/Info";
 import Plot from "./library/Plot";
 
@@ -14,6 +13,7 @@ function App() {
   const [data, setData] = useState(null);
   
   const plot = new Plot();
+  const info = new Info();
 
   useEffect(() => {
       async function fetchData() {
@@ -32,12 +32,11 @@ function App() {
       {<Header />}
       <div id="main">
         <div id="left">
-        {<Form data={data} plot={plot}/>}
-        {<Status message=""/>}
+        {<Form data={data} plot={plot} status={status} info={info}/>}
         </div>
         {<Canvas/>}
         <div id="left">
-        {<Info message=""/>}
+        {info}
         </div>
       </div>
     </div>
