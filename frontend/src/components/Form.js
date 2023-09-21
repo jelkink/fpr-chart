@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-function Form(props) {
+function Form({data, plot, info}) {
 
     const [selectedDataSet, setSelectedDataSet] = useState('test');
     const [selectedGraph, setSelectedGraph] = useState('');
@@ -13,21 +13,23 @@ function Form(props) {
     const dataSets = ["test", "ines_2020"];
     const graphs = ["", "bar", "scatter", "histogram"];
 
+    console.log(info);
+
     useEffect(() => {
 
-        props.plot.update(props.data, selectedGraph, selectedDepvar, selectedIndepvar, jitter, jitter_sd, bins);
-        props.info.updateVariableDescription(props.data, selectedDepvar, selectedIndepvar);
+        plot.update(data, selectedGraph, selectedDepvar, selectedIndepvar, jitter, jitter_sd, bins);
+        info.updateVariableDescription(data, selectedDepvar, selectedIndepvar);
     }, [selectedGraph, selectedDepvar, selectedIndepvar, jitter, jitter_sd, bins]);
 
     useEffect((e) => {
 
-        if (props.data) {
+        if (data) {
 
-            props.data.changeFile(selectedDataSet)
+            data.changeFile(selectedDataSet)
                 .then(() => {
                     setSelectedGraph('');
-                    setSelectedDepvar(props.data.getVariableNames()[1]);
-                    setSelectedIndepvar(props.data.getVariableNames()[1]);
+                    setSelectedDepvar(data.getVariableNames()[1]);
+                    setSelectedIndepvar(data.getVariableNames()[1]);
                 });
         }
     }, [selectedDataSet]);
@@ -36,7 +38,7 @@ function Form(props) {
         <div id="left-bar">
             <h2>Options</h2>
 
-            {props.data ? (
+            {data ? (
             <form name="options">
                 <table><tbody>
                     <tr>
@@ -67,7 +69,7 @@ function Form(props) {
                         <td>Dependent variable</td>
                         <td>
                             <select value={selectedDepvar} onChange={(e) => setSelectedDepvar(e.target.value)}>
-                                {props.data.getVariableNames().map((option, index) => (
+                                {data.getVariableNames().map((option, index) => (
                                     <option key={index} value={option}>
                                         {option}
                                     </option>
@@ -80,7 +82,7 @@ function Form(props) {
                         <td>Independent variable</td>
                         <td>
                             <select value={selectedIndepvar} onChange={(e) => setSelectedIndepvar(e.target.value)}>
-                                {props.data.getVariableNames().map((option, index) => (
+                                {data.getVariableNames().map((option, index) => (
                                     <option key={index} value={option}>
                                         {option}
                                     </option>

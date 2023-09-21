@@ -32,11 +32,11 @@ function App() {
       {<Header />}
       <div id="main">
         <div id="left">
-        {<Form data={data} plot={plot} status={status} info={info}/>}
+        {<Form data={data} plot={plot} info={info}/>}
         </div>
         {<Canvas/>}
         <div id="left">
-        {info}
+        <Info />
         </div>
       </div>
     </div>
