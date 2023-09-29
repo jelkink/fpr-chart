@@ -38,15 +38,20 @@ Data.prototype.getVariable = function(v) {
 
 Data.prototype.getDescription = function(v) {
 
-    var res = v + ": ";
+    var res = "<i>" + v + "</i>: ";
 
     v = this.data[v];
 
     res += v.label;
 
     if (v.labels) {
+
         res += "<br/><br/><ul>";
-        res += v.labels.map(({key, value}) => ("<li>" + key + ": " + value + "</li>"));
+
+        for (const key in v.labels) {
+            res += "<li>" + key + ": " + v.labels[key] + "</li>";
+        }
+
         res += "</ul>";
     }
 

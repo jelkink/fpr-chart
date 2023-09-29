@@ -13,12 +13,10 @@ function Form({data, plot, info}) {
     const dataSets = ["test", "ines_2020"];
     const graphs = ["", "bar", "scatter", "histogram"];
 
-    console.log(info);
-
     useEffect(() => {
 
         plot.update(data, selectedGraph, selectedDepvar, selectedIndepvar, jitter, jitter_sd, bins);
-        info.updateVariableDescription(data, selectedDepvar, selectedIndepvar);
+        info._self.updateVariableDescription(data, selectedDepvar, selectedIndepvar);
     }, [selectedGraph, selectedDepvar, selectedIndepvar, jitter, jitter_sd, bins]);
 
     useEffect((e) => {

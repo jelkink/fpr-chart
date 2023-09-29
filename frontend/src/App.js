@@ -5,7 +5,9 @@ import Data from "./components/Data"
 import Header from "./components/Header";
 import Form from "./components/Form";
 import Canvas from "./components/Canvas";
-import Info from "./components/Info";
+import RightPanel from "./components/RightPanel";
+
+import Info from "./library/Info";
 import Plot from "./library/Plot";
 
 function App() {
@@ -32,12 +34,10 @@ function App() {
       {<Header />}
       <div id="main">
         <div id="left">
-        {<Form data={data} plot={plot} info={info}/>}
+        {<Form data={data} plot={plot} info={info} />}
         </div>
         {<Canvas/>}
-        <div id="left">
-        <Info />
-        </div>
+        {<RightPanel info={info} />}
       </div>
     </div>
   );
