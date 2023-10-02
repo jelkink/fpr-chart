@@ -1,3 +1,5 @@
+import { tabulate } from "./Tabulate";
+
 function Data() {
 
     this.data = null;
@@ -54,17 +56,19 @@ Data.prototype.getDescription = function(v) {
 
     v = this.getVariable(v);
 
+    const table = tabulate(v);
+
     res += v.label;
 
     if (v.labels) {
 
-        res += "<br/><br/><ul>";
+        res += "<br/><br/><table>";
 
         for (const key in v.labels) {
-            res += "<li>" + key + ": " + v.labels[key] + "</li>";
+            res += "<tr><td>" + key + "</td><td>" + v.labels[key] + "</td><td>" + table[v.labels[key]] + "</td></tr>";
         }
 
-        res += "</ul>";
+        res += "</table>";
     }
 
     return res;
