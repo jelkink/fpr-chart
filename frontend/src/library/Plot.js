@@ -1,5 +1,5 @@
 import Chart from "chart.js/auto";
-import { tabulate, pair, bin } from "./Tabulate";
+import { tabulate, tabulate_bivariate, pair, bin } from "./Tabulate";
 
 const colors = ["blue", "red", "yellow", "green"];
 
@@ -27,57 +27,61 @@ class Plot {
 
             const newGraph = this.chart === null || this.chart.type !== selectedGraph;
 
-            var ds = [];
+            var data = null;
 
             if (selectedGraph === "bar" & dv !== null) {
 
-                const table = tabulate(dv);
+                if (iv === null || iv == dv) {
+                    const table = tabulate(dv);
 
-                ds.push({
-                    labels: Object.keys(table),
-                    data: Object.values(table),
-                    label: dv.label,
-                    backgroundColor: colors[ds.length],
-                    borderWidth: 1,
-                });
+                    data = {
+                        labels: Object.keys(table),
+                        data: Object.values(table),
+                        label: dv.label,
+                        backgroundColor: colors[0],
+                        borderWidth: 1,
+                    };
+                } else {
+                    var tables = tabulate_bivariate(dv, iv);
+
+                    data = {
+                        labels: Object.values(dv.labels),
+                        datasets: tables
+                    };
+                }
             };
 
             if (selectedGraph === "histogram" & dv !== null) {
 
                 const table = bin(dv, bins);
 
-                ds.push({
+                data = {
                     labels: Object.keys(table),
                     data: Object.values(table),
                     label: dv.label,
-                    backgroundColor: colors[ds.length],
+                    backgroundColor: colors[0],
                     borderWidth: 1,
-                });
+                };
             };
 
             if (selectedGraph === "scatter" & dv !== null & iv !== null) {
 
                 const paired = pair(iv, dv, jitter, jitter_sd);
 
-                ds.push({
+                data = {
                     label: dv.label + " by " + iv.label,
                     data: paired,
-                });
+                };
             };
 
-            if (ds.length > 0) {
-
-                const data = {
-                    labels: ds[0].labels,
-                    datasets: ds,
-                };
+            if (data !== null) {
 
                 const config = {
                     type: (selectedGraph === "histogram" ? "bar" : selectedGraph),
                     data: data,
                     options: {
                         title: {
-                            text: ds[0].label,
+                            text: data.label,
                             display: true,
                         },
                         legend: {
@@ -92,6 +96,8 @@ class Plot {
                         }
                     },
                 };
+
+                console.log(data);
 
                 if (newGraph) {
                     if (this.chart !== null) this.chart.destroy();

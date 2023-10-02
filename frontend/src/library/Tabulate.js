@@ -3,7 +3,7 @@ import round from "../library/FormatUtils";
 
 function tabulate(variable) {
 
-    var table = {};
+    var table = [];
 
     for (var i = 0; i < variable.values.length; i++) {
         if (table[variable.values[i].toString()] >= 0) {
@@ -14,7 +14,7 @@ function tabulate(variable) {
     }
 
     if (variable.labels) {
-        var labelled_table = {};
+        var labelled_table = [];
 
         for (let i in variable.labels) {
             labelled_table[variable.labels[i]] = table[i];
@@ -24,6 +24,25 @@ function tabulate(variable) {
     } else {
         return table;
     }
+};
+
+function tabulate_bivariate(variable, groups) {
+
+    const group_table = tabulate(groups);
+
+    var tables = [];
+
+    Object.entries(group_table).forEach((group_count, group_key) => {
+
+        var v = {};
+
+        v.data = tabulate(variable.values.filter((val, key) => groups.values[key] == Object.keys(groups.labels)[group_key]));
+        v.label = group_count[0];
+
+        tables[group_key] = v;
+    });
+
+    return tables;
 };
 
 function bin(variable, bins) {
@@ -84,4 +103,4 @@ function pair(x, y, jitter, jitter_sd) {
     return paired;
 };
 
-export { tabulate, bin, pair };
+export { tabulate, tabulate_bivariate, bin, pair };
