@@ -2,7 +2,10 @@ import React, { useState, useEffect } from "react";
 
 function Form({data, plot, info}) {
 
-    const [selectedDataSet, setSelectedDataSet] = useState('test');
+    const dataSets = ["ines_2020", "test"];
+    const graphs = ["", "bar", "scatter", "histogram"];
+
+    const [selectedDataSet, setSelectedDataSet] = useState(dataSets[1]);
     const [selectedGraph, setSelectedGraph] = useState('');
     const [selectedDepvar, setSelectedDepvar] = useState('');
     const [selectedIndepvar, setSelectedIndepvar] = useState('');
@@ -10,13 +13,10 @@ function Form({data, plot, info}) {
     const [jitter_sd, setJitterSD] = useState(10);
     const [bins, setBins] = useState(10);
 
-    const dataSets = ["test", "ines_2020"];
-    const graphs = ["", "bar", "scatter", "histogram"];
-
     useEffect(() => {
 
         plot.update(data, selectedGraph, selectedDepvar, selectedIndepvar, jitter, jitter_sd, bins);
-        info._self.updateVariableDescription(data, selectedDepvar, selectedIndepvar);
+        info.updateVariableDescription(data, selectedDepvar, selectedIndepvar);
     }, [selectedGraph, selectedDepvar, selectedIndepvar, jitter, jitter_sd, bins]);
 
     useEffect((e) => {

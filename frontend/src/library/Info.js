@@ -1,20 +1,4 @@
-import React, { useState } from "react";
-
 class Info {
-
-    constructor() {
-
-        const [information, setInformation] = useState('');
-
-        this.setInformation = setInformation;
-
-        return (
-            <div name="info">
-                <h2>Info</h2>
-                <div dangerouslySetInnerHTML={{ __html: information }}></div>
-            </div>
-        )
-    }
 
     updateVariableDescription(data, selectedDepvar, selectedIndepvar) {
 
@@ -30,7 +14,7 @@ class Info {
             }
         }
 
-        this.setInformation(desc);
+        document.getElementsByName("variables_description")[0].innerHTML = desc;
     }
 };
 

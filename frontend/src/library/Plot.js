@@ -57,7 +57,6 @@ class Plot {
 
             if (selectedGraph === "scatter" & dv !== null & iv !== null) {
 
-                console.log("IV: ", iv);
                 const paired = pair(iv, dv, jitter, jitter_sd);
 
                 ds.push({
@@ -102,10 +101,6 @@ class Plot {
                     this.chart.type = (selectedGraph === "histogram" ? "bar" : selectedGraph);
                     this.chart.options = config.options;
                     this.chart.update();
-                }
-            } else {
-                if (this.chart !== null) {
-                    this.chart.display = false;
                 }
             }
         }

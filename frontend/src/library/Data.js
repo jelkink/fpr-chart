@@ -1,7 +1,7 @@
 function Data() {
 
     this.data = null;
-    this.filename = "test"
+    this.filename = ""
 }
 
 Data.prototype.changeFile = async function(name) {
@@ -25,22 +25,34 @@ Data.prototype.load = async function() {
 }
 
 Data.prototype.getVariableNames = function() {
-    return Object.keys(this.data);
+    if (this.data !== null) {
+        return Object.keys(this.data);
+    } else {
+        return [];
+    }
 }
 
 Data.prototype.hasVariable = function(v) {
-    return Object.keys(this.data).includes(v);
+    if (this.data !== null) {
+        return Object.keys(this.data).includes(v);
+    } else {
+        return false;
+    }
 }
 
 Data.prototype.getVariable = function(v) {
-    return this.data[v];
+    if (this.hasVariable(v)) {
+        return this.data[v];
+    } else {
+        return [];
+    }
 }
 
 Data.prototype.getDescription = function(v) {
 
     var res = "<i>" + v + "</i>: ";
 
-    v = this.data[v];
+    v = this.getVariable(v);
 
     res += v.label;
 

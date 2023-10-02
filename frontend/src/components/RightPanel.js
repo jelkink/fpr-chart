@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 
-function RightPanel(props) {
+function RightPanel() {
 
     return (
         <div name="right">
-            {props.info}
+            <div name="info">
+                <h2>Info</h2>
+                <div name="variables_description"></div>
+            </div>
         </div>
     )
 }
