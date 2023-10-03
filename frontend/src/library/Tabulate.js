@@ -1,7 +1,7 @@
 import rand_normal from "../library/Stats";
 import round from "../library/FormatUtils";
 
-function tabulate(variable) {
+function tabulate(variable, labelled = true) {
 
     var table = [];
 
@@ -13,7 +13,7 @@ function tabulate(variable) {
         }
     }
 
-    if (variable.labels) {
+    if (variable.labels && labelled) {
         var labelled_table = [];
 
         for (let i in variable.labels) {
@@ -28,18 +28,22 @@ function tabulate(variable) {
 
 function tabulate_bivariate(variable, groups) {
 
-    const group_table = tabulate(groups);
+    const group_table = tabulate(groups, false);
+    const group_table_labelled = tabulate(groups, true);
 
     var tables = [];
 
     Object.entries(group_table).forEach((group_count, group_key) => {
 
         var v = {};
+        var tab = {};
+        
+        v.values = variable.values.filter((val, key) => groups.values[key].toString() == group_count[0]);
 
-        v.data = tabulate(variable.values.filter((val, key) => groups.values[key] == Object.keys(groups.labels)[group_key]));
-        v.label = group_count[0];
+        tab.data = tabulate(v, false);
+        tab.label = Object.keys(group_table_labelled)[group_key];
 
-        tables[group_key] = v;
+        tables[group_key] = tab;
     });
 
     return tables;

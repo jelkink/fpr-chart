@@ -28,9 +28,9 @@ Data.prototype.load = async function() {
 
 Data.prototype.getVariableNames = function() {
     if (this.data !== null) {
-        return Object.keys(this.data);
+        return [''].concat(Object.keys(this.data));
     } else {
-        return [];
+        return [''];
     }
 }
 

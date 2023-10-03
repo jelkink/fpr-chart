@@ -3,8 +3,8 @@ import React from "react";
 function RightPanel() {
 
     return (
-        <div name="right">
-            <div name="info">
+        <div id="right">
+            <div id="info">
                 <h2>Info</h2>
                 <div name="variables_description"></div>
             </div>

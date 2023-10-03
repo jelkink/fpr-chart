@@ -7,17 +7,17 @@ function Form({data, plot, info}) {
 
     const [selectedDataSet, setSelectedDataSet] = useState(dataSets[1]);
     const [selectedGraph, setSelectedGraph] = useState('');
-    const [selectedDepvar, setSelectedDepvar] = useState('');
-    const [selectedIndepvar, setSelectedIndepvar] = useState('');
+    const [selectedVar1, setSelectedVar1] = useState('');
+    const [selectedVar2, setSelectedVar2] = useState('');
     const [jitter, setJitter] = useState(false);
     const [jitter_sd, setJitterSD] = useState(10);
     const [bins, setBins] = useState(10);
 
     useEffect(() => {
 
-        plot.update(data, selectedGraph, selectedDepvar, selectedIndepvar, jitter, jitter_sd, bins);
-        info.updateVariableDescription(data, selectedDepvar, selectedIndepvar);
-    }, [selectedGraph, selectedDepvar, selectedIndepvar, jitter, jitter_sd, bins]);
+        plot.update(data, selectedGraph, selectedVar1, selectedVar2, jitter, jitter_sd, bins);
+        info.updateVariableDescription(data, selectedVar1, selectedVar2);
+    }, [selectedGraph, selectedVar1, selectedVar2, jitter, jitter_sd, bins]);
 
     useEffect((e) => {
 
@@ -26,8 +26,8 @@ function Form({data, plot, info}) {
             data.changeFile(selectedDataSet)
                 .then(() => {
                     setSelectedGraph('');
-                    setSelectedDepvar(data.getVariableNames()[1]);
-                    setSelectedIndepvar(data.getVariableNames()[1]);
+                    setSelectedVar1(data.getVariableNames()[0]);
+                    setSelectedVar2(data.getVariableNames()[0]);
                 });
         }
     }, [selectedDataSet]);
@@ -64,9 +64,9 @@ function Form({data, plot, info}) {
                         </td>
                     </tr>
                     <tr>
-                        <td>Dependent variable</td>
+                        <td>Variable 1</td>
                         <td>
-                            <select value={selectedDepvar} onChange={(e) => setSelectedDepvar(e.target.value)}>
+                            <select value={selectedVar1} onChange={(e) => setSelectedVar1(e.target.value)}>
                                 {data.getVariableNames().map((option, index) => (
                                     <option key={index} value={option}>
                                         {option}
@@ -77,9 +77,9 @@ function Form({data, plot, info}) {
                      </tr> 
 
                      <tr>
-                        <td>Independent variable</td>
+                        <td>Variable 2</td>
                         <td>
-                            <select value={selectedIndepvar} onChange={(e) => setSelectedIndepvar(e.target.value)}>
+                            <select value={selectedVar2} onChange={(e) => setSelectedVar2(e.target.value)}>
                                 {data.getVariableNames().map((option, index) => (
                                     <option key={index} value={option}>
                                         {option}
