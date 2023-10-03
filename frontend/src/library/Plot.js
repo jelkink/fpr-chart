@@ -1,6 +1,9 @@
-import Chart from "chart.js/auto"
+import { Chart, LinearScale, CategoryScale } from 'chart.js';
+import { BoxPlotController, BoxAndWiskers } from "@sgratzl/chartjs-chart-boxplot"
 import { tabulate, tabulate_bivariate, pair, bin } from "./Tabulate"
 import { linearRegression, minimum, maximum } from "./Stats"
+
+Chart.register(BoxPlotController, BoxAndWiskers, LinearScale, CategoryScale)    
 
 const singleBarChart = function(var1) {
 
@@ -41,6 +44,17 @@ const histogram = function(var1, bins) {
         }],
         backgroundColor: "blue",
         borderWidth: 1,
+    })
+}
+
+const boxplot = function(var1) {
+
+    return({
+        datasets: [{
+            data: [var1.values],
+            label: var1.label,
+            type: "boxplot"
+        }]
     })
 }
 
@@ -127,6 +141,15 @@ class Plot {
                 showLegend = false
             }
 
+
+            if (selectedGraph === "boxplot" & var1 !== null) {
+
+                data = boxplot(var1)
+                title = "Boxplot of " + var1.label
+                labelY = var1.label
+                showLegend = false
+            }
+
             if (selectedGraph === "scatter" & var1 !== null & var2 !== null) {
 
                 data = scatterPlot(var1, var2, jitter, jitter_sd, regression)
@@ -138,8 +161,7 @@ class Plot {
 
             if (data !== null) {
 
-                const config = {
-                    //type: (selectedGraph === "histogram" ? "bar" : selectedGraph),
+                var config = {
                     data: data,
                     options: {
                         plugins: {

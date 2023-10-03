@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 function Form({data, plot, info}) {
 
     const dataSets = ["ines_2020", "test"];
-    const graphs = ["", "bar", "scatter", "histogram"];
+    const graphs = ["", "bar", "scatter", "histogram", "boxplot"];
 
     const [selectedDataSet, setSelectedDataSet] = useState(dataSets[1]);
     const [selectedGraph, setSelectedGraph] = useState('');
@@ -96,10 +96,26 @@ function Form({data, plot, info}) {
                 <table><tbody>
                      <tr>
                         <td>
-                            Jitter <input type="checkbox" checked={jitter} onChange={() => setJitter(!jitter)}/> on/off
+                            Jitter 
+                        </td>
+                        <td>
+                            <input type="checkbox" checked={jitter} onChange={() => setJitter(!jitter)}/> on/off  
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
                         </td>
                         <td>
                             <input type="range" value={jitter_sd} onChange={(e) => setJitterSD(parseInt(e.target.value))} min="0" max="500" />
+                        </td>
+                    </tr>
+
+                     <tr>
+                        <td>
+                            Regression line 
+                        </td>
+                        <td>
+                            <input type="checkbox" checked={regression} onChange={() => setRegression(!regression)}/> on/off
                         </td>
                     </tr>
                     
@@ -110,12 +126,6 @@ function Form({data, plot, info}) {
                         </td>
                      </tr>
 
-                     <tr>
-                        <td colSpan="2">
-                            Regression line <input type="checkbox" checked={regression} onChange={() => setRegression(!regression)}/> on/off
-                        </td>
-                    </tr>
-                    
                 </tbody></table>
             </form>
             ) : (
