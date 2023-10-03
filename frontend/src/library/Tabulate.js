@@ -42,6 +42,7 @@ function tabulate_bivariate(variable, groups) {
 
         tab.data = Object.values(tabulate(v, false));
         tab.label = Object.keys(group_table_labelled)[group_key];
+        tab.type = "bar";
 
         tables[group_key] = tab;
     });

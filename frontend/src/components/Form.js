@@ -12,12 +12,13 @@ function Form({data, plot, info}) {
     const [jitter, setJitter] = useState(false);
     const [jitter_sd, setJitterSD] = useState(10);
     const [bins, setBins] = useState(10);
+    const [regression, setRegression] = useState(false);
 
     useEffect(() => {
 
-        plot.update(data, selectedGraph, selectedVar1, selectedVar2, jitter, jitter_sd, bins);
+        plot.update(data, selectedGraph, selectedVar1, selectedVar2, jitter, jitter_sd, bins, regression);
         info.updateVariableDescription(data, selectedVar1, selectedVar2);
-    }, [selectedGraph, selectedVar1, selectedVar2, jitter, jitter_sd, bins]);
+    }, [selectedGraph, selectedVar1, selectedVar2, jitter, jitter_sd, bins, regression]);
 
     useEffect((e) => {
 
@@ -108,6 +109,12 @@ function Form({data, plot, info}) {
                             <input type="range" value={bins} onChange={(e) => setBins(parseInt(e.target.value))} min="1" max="20" />
                         </td>
                      </tr>
+
+                     <tr>
+                        <td colSpan="2">
+                            Regression line <input type="checkbox" checked={regression} onChange={() => setRegression(!regression)}/> on/off
+                        </td>
+                    </tr>
                     
                 </tbody></table>
             </form>
