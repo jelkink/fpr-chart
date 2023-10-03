@@ -1,5 +1,5 @@
-import rand_normal from "../library/Stats";
-import round from "../library/FormatUtils";
+import { rand_normal } from "../library/Stats";
+import { round } from "../library/FormatUtils";
 
 function tabulate(variable, labelled = true) {
 

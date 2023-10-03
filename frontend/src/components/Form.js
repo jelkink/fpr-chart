@@ -34,10 +34,10 @@ function Form({data, plot, info}) {
 
     return (
         <div id="left-bar">
-            <h2>Options</h2>
-
             {data ? (
             <form name="options">
+                <h2>Data</h2>
+
                 <table><tbody>
                     <tr>
                         <td>Data set</td>
@@ -88,11 +88,11 @@ function Form({data, plot, info}) {
                             </select>
                         </td>
                      </tr>
+                </tbody></table>
                      
-                     <tr>
-                        <td height="20px"></td>
-                     </tr>
+                <h2>Options</h2>
 
+                <table><tbody>
                      <tr>
                         <td>
                             Jitter <input type="checkbox" checked={jitter} onChange={() => setJitter(!jitter)}/> on/off

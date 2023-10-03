@@ -65,8 +65,7 @@ class Plot {
 
         var var1 = null;
         var var2 = null;
-
-        console.log("Updating plot (" + selectedGraph + ", DV:" + selectedVar1 + ", IV:" + selectedVar2 + ")");
+        var title = '';
 
         if (data) {
             var1 = (data.hasVariable(selectedVar1) ? data.getVariable(selectedVar1) : null);
@@ -83,19 +82,23 @@ class Plot {
 
                 if (var2 === null || selectedVar1 == selectedVar2) {
                     data = singleBarChart(var1);
+                    title = var1.label;
                 } else {
-                    data = bivariateBarChart(var1, var2);
+                    data = bivariateBarChart(var2, var1);
+                    title = var1.label + " by " + var2.label;
                 }
             };
 
             if (selectedGraph === "histogram" & var1 !== null) {
 
                 data = histogram(var1, bins);
+                title = "Histogram of " + var1.label;
             };
 
             if (selectedGraph === "scatter" & var1 !== null & var2 !== null) {
 
                 data = scatterPlot(var1, var2, jitter, jitter_sd);
+                title = var1.label + " by " + var2.label;
             };
 
             if (data !== null) {
@@ -104,20 +107,22 @@ class Plot {
                     type: (selectedGraph === "histogram" ? "bar" : selectedGraph),
                     data: data,
                     options: {
-                        title: {
-                            text: data.label,
-                            display: true,
-                        },
-                        legend: {
-                            display: false,
-                        },
-                        scales: {
-                            y: {
-                                ticks: {
-                                    beginAtZero: true,
+                        plugins: {
+                            title: {
+                                text: title,
+                                display: true,
+                            },
+                            legend: {
+                                position: "bottom",
+                            },
+                            scales: {
+                                y: {
+                                    ticks: {
+                                        beginAtZero: true,
+                                    }
                                 }
                             }
-                        }
+                        },
                     },
                 };
 

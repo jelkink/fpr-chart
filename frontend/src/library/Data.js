@@ -1,4 +1,5 @@
 import { tabulate } from "./Tabulate";
+import { mean, minimum, maximum } from "./Stats";
 
 function Data() {
 
@@ -59,17 +60,19 @@ Data.prototype.getDescription = function(v) {
     const table = tabulate(v);
 
     res += v.label;
+    res += "<br/><br/><table>";
 
     if (v.labels) {
-
-        res += "<br/><br/><table>";
-
         for (const key in v.labels) {
             res += "<tr><td>" + key + "</td><td>" + v.labels[key] + "</td><td>" + table[v.labels[key]] + "</td></tr>";
         }
-
-        res += "</table>";
+    } else {
+        res += "<tr><td>Minimum</td><td>" + minimum(v.values) + "</td></tr>";
+        res += "<tr><td>Mean</td><td>" + mean(v.values) + "</td></tr>";
+        res += "<tr><td>Maximum</td><td>" + maximum(v.values) + "</td></tr>";
     }
+
+    res += "</table>";
 
     return res;
 }
