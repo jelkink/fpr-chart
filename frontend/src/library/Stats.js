@@ -7,13 +7,14 @@ function rand_normal(mean=0, stdev=1) {
 
 function mean(v) {
 
-    var sum = 0;
+    return v.reduce((acc, val) => acc + val) / v.length
+}
 
-    for (var i = 0; i < v.length; i++) {
-        sum += v[i];
-    }
+function stddev(v) {
 
-    return sum / v.length;
+    const mu = mean(v)
+
+    return Math.sqrt(v.map(x => Math.pow(x - mu, 2)).reduce((acc, val) => acc + val) / v.length)
 }
 
 function minimum(v) {
@@ -38,4 +39,4 @@ function maximum(v) {
     return max;
 }
 
-export { rand_normal, minimum, maximum, mean };
+export { rand_normal, minimum, maximum, mean, stddev };

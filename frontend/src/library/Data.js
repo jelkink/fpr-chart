@@ -1,5 +1,5 @@
 import { tabulate } from "./Tabulate";
-import { mean, minimum, maximum } from "./Stats";
+import { mean, stddev, minimum, maximum } from "./Stats";
 
 function Data() {
 
@@ -70,6 +70,7 @@ Data.prototype.getDescription = function(v) {
         res += "<tr><td>Minimum</td><td>" + minimum(v.values) + "</td></tr>";
         res += "<tr><td>Mean</td><td>" + mean(v.values) + "</td></tr>";
         res += "<tr><td>Maximum</td><td>" + maximum(v.values) + "</td></tr>";
+        res += "<tr><td>Standard deviation</td><td>" + stddev(v.values) + "</td></tr>";
     }
 
     res += "</table>";
