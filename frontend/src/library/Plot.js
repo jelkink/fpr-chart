@@ -1,8 +1,6 @@
 import Chart from "chart.js/auto";
 import { tabulate, tabulate_bivariate, pair, bin } from "./Tabulate";
 
-const colors = ["blue", "red", "yellow", "green"];
-
 const singleBarChart = function(var1) {
 
     const table = tabulate(var1);
@@ -13,7 +11,7 @@ const singleBarChart = function(var1) {
             data: Object.values(table),
             label: var1.label
         }],
-        backgroundColor: colors[0],
+        backgroundColor: "blue",
         borderWidth: 1,
     });
 }
@@ -38,7 +36,7 @@ const histogram = function(var1, bins) {
             data: Object.values(table),
             label: var1.label,
         }],
-        backgroundColor: colors[0],
+        backgroundColor: "blue",
         borderWidth: 1,
     });
 }

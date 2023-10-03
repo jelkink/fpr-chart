@@ -9,7 +9,7 @@ function tabulate(variable, labelled = true) {
         if (table[variable.values[i].toString()] >= 0) {
             table[variable.values[i].toString()] += 1;
         } else {
-            table[variable.values[i].toString()] = 0;
+            table[variable.values[i].toString()] = 1;
         }
     }
 
@@ -40,7 +40,7 @@ function tabulate_bivariate(variable, groups) {
         
         v.values = variable.values.filter((val, key) => groups.values[key].toString() == group_count[0]);
 
-        tab.data = tabulate(v, false);
+        tab.data = Object.values(tabulate(v, false));
         tab.label = Object.keys(group_table_labelled)[group_key];
 
         tables[group_key] = tab;
