@@ -224,7 +224,7 @@ class Plot {
                 title = "Scatter plot of " + var1.label + " by " + var2.label
                 labelX = var2.label
                 labelY = var1.label
-                showLegend = var3 !== null
+                showLegend = var3 !== null & regression
             }
 
             if (data !== null) {
