@@ -1,24 +1,25 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react"
 
 function Form({data, plot, info}) {
 
-    const dataSets = ["ines_2020", "test"];
-    const graphs = ["", "bar", "scatter", "histogram", "boxplot"];
+    const dataSets = ["ines_2020", "test"]
+    const graphs = ["", "bar", "scatter", "histogram", "boxplot"]
 
-    const [selectedDataSet, setSelectedDataSet] = useState(dataSets[1]);
-    const [selectedGraph, setSelectedGraph] = useState('');
-    const [selectedVar1, setSelectedVar1] = useState('');
-    const [selectedVar2, setSelectedVar2] = useState('');
-    const [jitter, setJitter] = useState(false);
-    const [jitter_sd, setJitterSD] = useState(10);
-    const [bins, setBins] = useState(10);
-    const [regression, setRegression] = useState(false);
+    const [selectedDataSet, setSelectedDataSet] = useState(dataSets[1])
+    const [selectedGraph, setSelectedGraph] = useState('')
+    const [selectedVar1, setSelectedVar1] = useState('')
+    const [selectedVar2, setSelectedVar2] = useState('')
+    const [selectedVar3, setSelectedVar3] = useState('')
+    const [jitter, setJitter] = useState(false)
+    const [jitter_sd, setJitterSD] = useState(10)
+    const [bins, setBins] = useState(10)
+    const [regression, setRegression] = useState(false)
 
     useEffect(() => {
 
-        plot.update(data, selectedGraph, selectedVar1, selectedVar2, jitter, jitter_sd, bins, regression);
-        info.updateVariableDescription(data, selectedVar1, selectedVar2);
-    }, [selectedGraph, selectedVar1, selectedVar2, jitter, jitter_sd, bins, regression]);
+        plot.update(data, selectedGraph, selectedVar1, selectedVar2, jitter, jitter_sd, bins, regression)
+        info.updateVariableDescription(data, selectedVar1, selectedVar2, selectedVar3)
+    }, [selectedGraph, selectedVar1, selectedVar2, selectedVar3, jitter, jitter_sd, bins, regression])
 
     useEffect((e) => {
 
@@ -26,12 +27,13 @@ function Form({data, plot, info}) {
 
             data.changeFile(selectedDataSet)
                 .then(() => {
-                    setSelectedGraph('');
-                    setSelectedVar1(data.getVariableNames()[0]);
-                    setSelectedVar2(data.getVariableNames()[0]);
-                });
+                    setSelectedGraph('')
+                    setSelectedVar1(data.getVariableNames()[0])
+                    setSelectedVar2(data.getVariableNames()[0])
+                    setSelectedVar3(data.getVariableNames()[0])
+                })
         }
-    }, [selectedDataSet]);
+    }, [selectedDataSet])
 
     return (
         <div id="left-bar">
@@ -89,6 +91,20 @@ function Form({data, plot, info}) {
                             </select>
                         </td>
                      </tr>
+
+                     <tr>
+                        <td>Variable 3</td>
+                        <td>
+                            <select value={selectedVar3} onChange={(e) => setSelectedVar3(e.target.value)}>
+                                {data.getVariableNames().map((option, index) => (
+                                    <option key={index} value={option}>
+                                        {option}
+                                    </option>
+                                ))}
+                            </select>
+                        </td>
+                     </tr>
+
                 </tbody></table>
                      
                 <h2>Options</h2>
@@ -136,4 +152,4 @@ function Form({data, plot, info}) {
     )
 }
 
-export default Form;
+export default Form

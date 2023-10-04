@@ -1,16 +1,20 @@
 class Info {
 
-    updateVariableDescription(data, selectedDepvar, selectedIndepvar) {
+    updateVariableDescription(data, selectedVar1, selectedVar2, selectedVar3) {
 
         var desc = '';
 
         if (data) {
-            if (selectedDepvar) {
-                desc += "<h3>Dependent variable</h3>" + data.getDescription(selectedDepvar);
+            if (selectedVar1) {
+                desc += "<h3>Variable 1</h3>" + data.getDescription(selectedVar1);
             }
             
-            if (selectedIndepvar) {
-                desc += "<h3>Independent variable</h3>" + data.getDescription(selectedIndepvar);
+            if (selectedVar2) {
+                desc += "<h3>Variable 2</h3>" + data.getDescription(selectedVar2);
+            }
+                        
+            if (selectedVar3) {
+                desc += "<h3>Variable 3</h3>" + data.getDescription(selectedVar3);
             }
         }
 
