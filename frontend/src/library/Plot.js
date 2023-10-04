@@ -1,8 +1,9 @@
-import { Chart, LinearScale, CategoryScale } from 'chart.js';
+import { Chart, LinearScale, CategoryScale, registerables } from 'chart.js';
 import { BoxPlotController, BoxAndWiskers } from "@sgratzl/chartjs-chart-boxplot"
 import { tabulate, tabulate_bivariate, pair, bin } from "./Tabulate"
 import { linearRegression, minimum, maximum } from "./Stats"
 
+Chart.register(...registerables)
 Chart.register(BoxPlotController, BoxAndWiskers, LinearScale, CategoryScale)    
 
 const singleBarChart = function(var1) {
@@ -50,6 +51,7 @@ const histogram = function(var1, bins) {
 const boxplot = function(var1) {
 
     return({
+        labels: [var1.label],
         datasets: [{
             data: [var1.values],
             label: var1.label,

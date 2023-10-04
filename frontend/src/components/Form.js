@@ -94,7 +94,15 @@ function Form({data, plot, info}) {
                 <h2>Options</h2>
 
                 <table><tbody>
+                    
                      <tr>
+                        <td>Bins</td>
+                        <td>
+                            <input type="range" value={bins} onChange={(e) => setBins(parseInt(e.target.value))} min="1" max="20" />
+                        </td>
+                     </tr>
+                     
+                                          <tr>
                         <td>
                             Jitter 
                         </td>
@@ -118,13 +126,6 @@ function Form({data, plot, info}) {
                             <input type="checkbox" checked={regression} onChange={() => setRegression(!regression)}/> on/off
                         </td>
                     </tr>
-                    
-                    <tr>
-                        <td>Bins</td>
-                        <td>
-                            <input type="range" value={bins} onChange={(e) => setBins(parseInt(e.target.value))} min="1" max="20" />
-                        </td>
-                     </tr>
 
                 </tbody></table>
             </form>
