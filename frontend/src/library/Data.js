@@ -21,10 +21,8 @@ Data.prototype.load = async function() {
         const response = await fetch("./data/" + this.filename + "_data.json");
         this.data = await response.json();
     } catch (error) {
-        console.log("Fetching data files: ", error);
+        console.log("ERROR Fetching data files: ", error);
     }
-
-    console.log("Data ready");
 }
 
 Data.prototype.getVariableNames = function() {

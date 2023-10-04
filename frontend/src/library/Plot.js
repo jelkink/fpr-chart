@@ -102,7 +102,7 @@ const trivariateBoxplot = function(var1, var2, var3) {
     })
 }
 
-const scatterPlot = function(var1, var2, jitter, jitter_sd, regression = false) {
+const scatterPlot = function(var1, var2, var3, jitter, jitter_sd, regression = false) {
 
     const paired = pair(var2, var1, jitter, jitter_sd)
 
@@ -114,18 +114,25 @@ const scatterPlot = function(var1, var2, jitter, jitter_sd, regression = false) 
 
     if (regression) {
 
-        const coef = linearRegression(var1.values, var2.values)
-
         const x1 = minimum(var2.values)
         const x2 = maximum(var2.values)
+            
+        const y = var3 === null ? { values: [var1.values]} : split_by_group(var1, var3)
+        const x = var3 === null ? { values: [var2.values]} : split_by_group(var2, var3)
+        const labels = var3 === null ? var2.label : Object.keys(tabulate(var3, true))
 
-        ds.push({
-            label: "linear regression",
-            type: "line",
-            data: [
-                { x: x1, y: x1 * coef[1] + coef[0] },
-                { x: x2, y: x2 * coef[1] + coef[0] }
-            ]
+        y.values.forEach((val, key) => {
+
+            const coef = linearRegression(y.values[key], x.values[key])
+
+            ds.push({
+                label: labels[key],
+                type: "line",
+                data: [
+                    { x: x1, y: x1 * coef[1] + coef[0] },
+                    { x: x2, y: x2 * coef[1] + coef[0] }
+                ]
+            })
         })
     }
 
@@ -213,11 +220,11 @@ class Plot {
 
             if (selectedGraph === "scatter" & var1 !== null & var2 !== null) {
 
-                data = scatterPlot(var1, var2, jitter, jitter_sd, regression)
+                data = scatterPlot(var1, var2, var3, jitter, jitter_sd, regression)
                 title = "Scatter plot of " + var1.label + " by " + var2.label
                 labelX = var2.label
                 labelY = var1.label
-                showLegend = false
+                showLegend = var3 !== null
             }
 
             if (data !== null) {
@@ -264,9 +271,6 @@ class Plot {
                     this.chart.options = config.options
                     this.chart.update()
                 }
-
-                console.log(data)
-                console.log(config)
             }
         }
     }
