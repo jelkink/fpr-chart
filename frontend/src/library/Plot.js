@@ -82,8 +82,6 @@ const trivariateBoxplot = function(var1, var2, var3) {
 
     var datasets = []
 
-    console.log("groups: ", groups)
-
     variables.values.forEach((val, key) => {
 
         const variable = { values: variables.values[key] }
