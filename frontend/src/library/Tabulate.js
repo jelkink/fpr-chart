@@ -52,6 +52,8 @@ function tabulate_bivariate(variable, groups) {
 
 function split_by_group(variable, groups) {
 
+    console.log(variable, groups)
+
     const group_table = tabulate(groups, false)
 
     var values = []

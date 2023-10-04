@@ -62,7 +62,7 @@ const boxplot = function(var1) {
 
 const bivariateBoxplot = function(var1, var2) {
 
-    var values = split_by_group(var1, var2)
+    const values = split_by_group(var1, var2)
 
     return({
         labels: Object.keys(tabulate(var2)),
@@ -71,6 +71,36 @@ const bivariateBoxplot = function(var1, var2) {
             label: values["labels"],
             type: "boxplot"
         }]
+    })
+}
+
+const trivariateBoxplot = function(var1, var2, var3) {
+
+    const variables = split_by_group(var1, var3)
+    const groups = split_by_group(var2, var3)
+    const labels = tabulate(var3, true)
+
+    var datasets = []
+
+    console.log("groups: ", groups)
+
+    variables.values.forEach((val, key) => {
+
+        const variable = { values: variables.values[key] }
+        const group = { values: groups.values[key] } 
+
+        const values = split_by_group(variable, group)
+
+        datasets.push({
+            data: values["values"],
+            label: Object.keys(labels)[key],
+            type: "boxplot"
+        })
+    })
+
+    return({
+        labels: Object.keys(tabulate(var2)),
+        datasets: datasets
     })
 }
 
@@ -110,12 +140,13 @@ class Plot {
         this.chart = null
     }
 
-    update(data, selectedGraph, selectedVar1, selectedVar2, jitter, jitter_sd, bins, regression) {
+    update(data, selectedGraph, selectedVar1, selectedVar2, selectedVar3, jitter, jitter_sd, bins, regression) {
 
         const ctx = document.getElementById("chart")
 
         var var1 = null
         var var2 = null
+        var var3 = null
         var title = ''
         var labelX = ''
         var labelY = ''
@@ -124,6 +155,7 @@ class Plot {
         if (data) {
             var1 = (data.hasVariable(selectedVar1) ? data.getVariable(selectedVar1) : null)
             var2 = (data.hasVariable(selectedVar2) ? data.getVariable(selectedVar2) : null)
+            var3 = (data.hasVariable(selectedVar3) ? data.getVariable(selectedVar3) : null)
         }
 
         if (selectedGraph) {
@@ -166,13 +198,19 @@ class Plot {
                     title = "Boxplot of " + var1.label
                     labelY = var1.label
                     showLegend = false
-                } else {
+                } else if (var3 === null) {
                     
                     data = bivariateBoxplot(var1, var2)
                     title = "Boxplot of " + var2.label + " by " + var1.label
                     labelY = var1.label
                     showLegend = false
-                }  
+                } else {
+                                        
+                    data = trivariateBoxplot(var1, var2, var3)
+                    title = "Boxplot of " + var1.label + " by " + var2.label + " and " + var3.label
+                    labelY = var1.label
+                    showLegend = true
+                }
             }
 
             if (selectedGraph === "scatter" & var1 !== null & var2 !== null) {
