@@ -54,13 +54,30 @@ function split_by_group(variable, groups) {
 
     const group_table = tabulate(groups, false)
 
-    var values = []
+    var variables = []
 
     Object.entries(group_table).forEach((group_count) => {
-        values.push(variable.values.filter((val, key) => groups.values[key].toString() == group_count[0]))
+        variables.push({
+            values: variable.values.filter((val, key) => groups.values[key].toString() == group_count[0]),
+            labels: variable.labels,
+            label: variable.label
+        })
     })
 
-    return { values: values, labels: Object.entries(group_table) }
+    return variables
+}
+
+function subset_variable(variable, groups, subset) {
+
+    const val = groups.labels ? Object.keys(groups.labels)[Object.values(groups.labels).indexOf(subset)] : subset
+
+    console.log("Subsetting\nvariable: ", variable, "\ngroups: ", groups, "\nsubset: ", subset, "\nval: ", val)
+
+    return {
+        values: variable.values.filter((v, key) => groups.values[key] == val),
+        labels: variable.labels,
+        label: variable.label
+    }
 }
 
 function bin(variable, bins) {
@@ -121,4 +138,4 @@ function pair(x, y, jitter, jitter_sd) {
     return paired
 }
 
-export { tabulate, tabulate_bivariate, split_by_group, bin, pair }
+export { tabulate, tabulate_bivariate, split_by_group, subset_variable, bin, pair }

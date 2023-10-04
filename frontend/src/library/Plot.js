@@ -1,6 +1,6 @@
 import { Chart, LinearScale, CategoryScale, registerables } from 'chart.js';
 import { BoxPlotController, BoxAndWiskers } from "@sgratzl/chartjs-chart-boxplot"
-import { tabulate, tabulate_bivariate, split_by_group, pair, bin } from "./Tabulate"
+import { tabulate, tabulate_bivariate, subset_variable, split_by_group, pair, bin } from "./Tabulate"
 import { linearRegression, minimum, maximum } from "./Stats"
 
 Chart.register(...registerables)
@@ -62,13 +62,13 @@ const boxplot = function(var1) {
 
 const bivariateBoxplot = function(var1, var2) {
 
-    const values = split_by_group(var1, var2)
+    const vars = split_by_group(var1, var2)
 
     return({
         labels: Object.keys(tabulate(var2)),
         datasets: [{
-            data: values["values"],
-            label: values["labels"],
+            data: vars.map((v) => v.values),
+            label: vars.map((v) => v.labels),
             type: "boxplot"
         }]
     })
@@ -78,22 +78,17 @@ const trivariateBoxplot = function(var1, var2, var3) {
 
     const variables = split_by_group(var1, var3)
     const groups = split_by_group(var2, var3)
+
     const labels = tabulate(var3, true)
 
     var datasets = []
 
-    variables.values.forEach((val, key) => {
+    variables.forEach((v, key) => {
 
-        const variable = { values: variables.values[key] }
-        const group = { values: groups.values[key] } 
+        var v = bivariateBoxplot(v, groups[key]).datasets[0]
+        v.label = Object.keys(labels)[key]
 
-        const values = split_by_group(variable, group)
-
-        datasets.push({
-            data: values["values"],
-            label: Object.keys(labels)[key],
-            type: "boxplot"
-        })
+        datasets.push(v)
     })
 
     return({
@@ -117,13 +112,14 @@ const scatterPlot = function(var1, var2, var3, jitter, jitter_sd, regression = f
         const x1 = minimum(var2.values)
         const x2 = maximum(var2.values)
             
-        const y = var3 === null ? { values: [var1.values]} : split_by_group(var1, var3)
-        const x = var3 === null ? { values: [var2.values]} : split_by_group(var2, var3)
+        const y = var3 === null ? [var1.values] : split_by_group(var1, var3).map((y) => y.values)
+        const x = var3 === null ? [var2.values] : split_by_group(var2, var3).map((x) => x.values)
+
         const labels = var3 === null ? var2.label : Object.keys(tabulate(var3, true))
 
-        y.values.forEach((val, key) => {
+        y.forEach((val, key) => {
 
-            const coef = linearRegression(y.values[key], x.values[key])
+            const coef = linearRegression(y[key], x[key])
 
             ds.push({
                 label: labels[key],
@@ -145,13 +141,14 @@ class Plot {
         this.chart = null
     }
 
-    update(data, selectedGraph, selectedVar1, selectedVar2, selectedVar3, jitter, jitter_sd, bins, regression) {
+    update(data, selectedGraph, selectedVar1, selectedVar2, selectedVar3, selectedVarSubset, selectedGroupSubset, subset, jitter, jitter_sd, bins, regression) {
 
         const ctx = document.getElementById("chart")
 
         var var1 = null
         var var2 = null
         var var3 = null
+        var varSS = null
         var title = ''
         var labelX = ''
         var labelY = ''
@@ -161,6 +158,14 @@ class Plot {
             var1 = (data.hasVariable(selectedVar1) ? data.getVariable(selectedVar1) : null)
             var2 = (data.hasVariable(selectedVar2) ? data.getVariable(selectedVar2) : null)
             var3 = (data.hasVariable(selectedVar3) ? data.getVariable(selectedVar3) : null)
+            varSS = (data.hasVariable(selectedVarSubset) ? data.getVariable(selectedVarSubset) : null)
+        } 
+        
+        if (subset && varSS !== null && selectedGroupSubset !== ''){
+            var1 = var1 ? subset_variable(var1, varSS, selectedGroupSubset) : null
+            var2 = var2 ? subset_variable(var2, varSS, selectedGroupSubset) : null
+            var3 = var3 ? subset_variable(var3, varSS, selectedGroupSubset) : null
+            title = "\n(" + selectedVarSubset + " = " + selectedGroupSubset + ")"
         }
 
         if (selectedGraph) {
@@ -173,13 +178,13 @@ class Plot {
 
                 if (var2 === null || selectedVar1 == selectedVar2) {
                     data = singleBarChart(var1)
-                    title = "Bar chart of " + var1.label
+                    title = "Bar chart of " + var1.label + title
                     labelX = var1.label
                     labelY = "Frequency"
                     showLegend = false
                 } else {
                     data = bivariateBarChart(var1, var2)
-                    title = "Bar chart of " + var2.label + " by " + var1.label
+                    title = "Bar chart of " + var2.label + " by " + var1.label + title
                     labelX = var1.label
                     labelY = "Frequency"
                 }
@@ -188,7 +193,7 @@ class Plot {
             if (selectedGraph === "histogram" & var1 !== null) {
 
                 data = histogram(var1, bins)
-                title = "Histogram of " + var1.label
+                title = "Histogram of " + var1.label + title
                 labelX = var1.label
                 labelY = "Frequency"
                 showLegend = false
@@ -200,19 +205,19 @@ class Plot {
                 if (var2 === null || selectedVar1 == selectedVar2) {
 
                     data = boxplot(var1)
-                    title = "Boxplot of " + var1.label
+                    title = "Boxplot of " + var1.label + title
                     labelY = var1.label
                     showLegend = false
                 } else if (var3 === null) {
                     
                     data = bivariateBoxplot(var1, var2)
-                    title = "Boxplot of " + var2.label + " by " + var1.label
+                    title = "Boxplot of " + var2.label + " by " + var1.label + title
                     labelY = var1.label
                     showLegend = false
                 } else {
                                         
                     data = trivariateBoxplot(var1, var2, var3)
-                    title = "Boxplot of " + var1.label + " by " + var2.label + " and " + var3.label
+                    title = "Boxplot of " + var1.label + " by " + var2.label + " and " + var3.label + title
                     labelY = var1.label
                     showLegend = true
                 }
@@ -221,7 +226,7 @@ class Plot {
             if (selectedGraph === "scatter" & var1 !== null & var2 !== null) {
 
                 data = scatterPlot(var1, var2, var3, jitter, jitter_sd, regression)
-                title = "Scatter plot of " + var1.label + " by " + var2.label
+                title = "Scatter plot of " + var1.label + " by " + var2.label + title
                 labelX = var2.label
                 labelY = var1.label
                 showLegend = var3 !== null & regression

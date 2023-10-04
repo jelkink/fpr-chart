@@ -5,21 +5,24 @@ function Form({data, plot, info}) {
     const dataSets = ["ines_2020", "test"]
     const graphs = ["", "bar", "scatter", "histogram", "boxplot"]
 
-    const [selectedDataSet, setSelectedDataSet] = useState(dataSets[1])
+    const [selectedDataSet, setSelectedDataSet] = useState(dataSets[0])
     const [selectedGraph, setSelectedGraph] = useState('')
     const [selectedVar1, setSelectedVar1] = useState('')
     const [selectedVar2, setSelectedVar2] = useState('')
     const [selectedVar3, setSelectedVar3] = useState('')
+    const [selectedVarSubset, setSelectedVarSubset] = useState('')
+    const [selectedGroupSubset, setSelectedGroupSubset] = useState('')
     const [jitter, setJitter] = useState(false)
     const [jitter_sd, setJitterSD] = useState(10)
     const [bins, setBins] = useState(10)
     const [regression, setRegression] = useState(false)
+    const [subset, setSubset] = useState(false)
 
     useEffect(() => {
 
-        plot.update(data, selectedGraph, selectedVar1, selectedVar2, selectedVar3, jitter, jitter_sd, bins, regression)
-        info.updateVariableDescription(data, selectedVar1, selectedVar2, selectedVar3)
-    }, [selectedGraph, selectedVar1, selectedVar2, selectedVar3, jitter, jitter_sd, bins, regression])
+        plot.update(data, selectedGraph, selectedVar1, selectedVar2, selectedVar3, selectedVarSubset, selectedGroupSubset, subset, jitter, jitter_sd, bins, regression)
+        info.updateVariableDescription(data, selectedVar1, selectedVar2, selectedVar3, selectedVarSubset)
+    }, [selectedGraph, selectedVar1, selectedVar2, selectedVar3, selectedVarSubset, selectedGroupSubset, subset, jitter, jitter_sd, bins, regression])
 
     useEffect((e) => {
 
@@ -143,6 +146,38 @@ function Form({data, plot, info}) {
                         </td>
                     </tr>
 
+                    <tr>
+                        <td>
+                            Subset
+                        </td>
+                        <td>
+                            <input type="checkbox" checked={subset} onChange={() => setSubset(!subset)}/> on/off
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <select value={selectedVarSubset} onChange={(e) => setSelectedVarSubset(e.target.value)}>
+                                {data.getVariableNames().map((option, index) => (
+                                    <option key={index} value={option}>
+                                        {option}
+                                    </option>
+                                ))}
+                            </select>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td></td>
+                        <td>
+                            <select value={selectedGroupSubset} onChange={(e) => setSelectedGroupSubset(e.target.value)}>
+                                {data.getValueLabels(selectedVarSubset).map((option, index) => (
+                                    <option key={index} value={option}>
+                                        {option}
+                                    </option>
+                                ))}
+                            </select>
+                        </td>
+                     </tr>
                 </tbody></table>
             </form>
             ) : (

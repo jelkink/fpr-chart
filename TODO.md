@@ -2,4 +2,3 @@
 
 * Remove ID variable from INES data
 * Improve labelling INES data
-* Implement selecting subset
