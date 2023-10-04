@@ -1,6 +1,6 @@
 import { Chart, LinearScale, CategoryScale, registerables } from 'chart.js';
 import { BoxPlotController, BoxAndWiskers } from "@sgratzl/chartjs-chart-boxplot"
-import { tabulate, tabulate_bivariate, pair, bin } from "./Tabulate"
+import { tabulate, tabulate_bivariate, split_by_group, pair, bin } from "./Tabulate"
 import { linearRegression, minimum, maximum } from "./Stats"
 
 Chart.register(...registerables)
@@ -55,6 +55,20 @@ const boxplot = function(var1) {
         datasets: [{
             data: [var1.values],
             label: var1.label,
+            type: "boxplot"
+        }]
+    })
+}
+
+const bivariateBoxplot = function(var1, var2) {
+
+    var values = split_by_group(var1, var2)
+
+    return({
+        labels: Object.keys(tabulate(var2)),
+        datasets: [{
+            data: values["values"],
+            label: values["labels"],
             type: "boxplot"
         }]
     })
@@ -146,10 +160,19 @@ class Plot {
 
             if (selectedGraph === "boxplot" & var1 !== null) {
 
-                data = boxplot(var1)
-                title = "Boxplot of " + var1.label
-                labelY = var1.label
-                showLegend = false
+                if (var2 === null || selectedVar1 == selectedVar2) {
+
+                    data = boxplot(var1)
+                    title = "Boxplot of " + var1.label
+                    labelY = var1.label
+                    showLegend = false
+                } else {
+                    
+                    data = bivariateBoxplot(var1, var2)
+                    title = "Boxplot of " + var2.label + " by " + var1.label
+                    labelY = var1.label
+                    showLegend = false
+                }  
             }
 
             if (selectedGraph === "scatter" & var1 !== null & var2 !== null) {
