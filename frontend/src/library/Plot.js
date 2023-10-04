@@ -178,13 +178,13 @@ class Plot {
 
                 if (var2 === null || selectedVar1 == selectedVar2) {
                     data = singleBarChart(var1)
-                    title = "Bar chart of " + var1.label + title
+                    title = "Bar chart of " + selectedVar1 + title
                     labelX = var1.label
                     labelY = "Frequency"
                     showLegend = false
                 } else {
                     data = bivariateBarChart(var1, var2)
-                    title = "Bar chart of " + var2.label + " by " + var1.label + title
+                    title = "Bar chart of " + selectedVar2 + " by " + selectedVar1 + title
                     labelX = var1.label
                     labelY = "Frequency"
                 }
@@ -193,7 +193,7 @@ class Plot {
             if (selectedGraph === "histogram" & var1 !== null) {
 
                 data = histogram(var1, bins)
-                title = "Histogram of " + var1.label + title
+                title = "Histogram of " + selectedVar1 + title
                 labelX = var1.label
                 labelY = "Frequency"
                 showLegend = false
@@ -205,19 +205,19 @@ class Plot {
                 if (var2 === null || selectedVar1 == selectedVar2) {
 
                     data = boxplot(var1)
-                    title = "Boxplot of " + var1.label + title
+                    title = "Boxplot of " + selectedVar1 + title
                     labelY = var1.label
                     showLegend = false
                 } else if (var3 === null) {
                     
                     data = bivariateBoxplot(var1, var2)
-                    title = "Boxplot of " + var2.label + " by " + var1.label + title
+                    title = "Boxplot of " + selectedVar2 + " by " + selectedVar1 + title
                     labelY = var1.label
                     showLegend = false
                 } else {
                                         
                     data = trivariateBoxplot(var1, var2, var3)
-                    title = "Boxplot of " + var1.label + " by " + var2.label + " and " + var3.label + title
+                    title = "Boxplot of " + selectedVar1 + " by " + selectedVar2 + " and " + selectedVar3 + title
                     labelY = var1.label
                     showLegend = true
                 }
@@ -226,7 +226,7 @@ class Plot {
             if (selectedGraph === "scatter" & var1 !== null & var2 !== null) {
 
                 data = scatterPlot(var1, var2, var3, jitter, jitter_sd, regression)
-                title = "Scatter plot of " + var1.label + " by " + var2.label + title
+                title = "Scatter plot of " + selectedVar1 + " by " + selectedVar2 + title
                 labelX = var2.label
                 labelY = var1.label
                 showLegend = var3 !== null & regression
