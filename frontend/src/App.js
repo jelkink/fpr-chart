@@ -1,4 +1,5 @@
 import React from "react";
+import { HashRouter } from 'react-router-dom';
 import "./css/App.css";
 
 import Header from "./components/Header";
@@ -19,16 +20,18 @@ function App() {
   const data = new Data();
 
   return (
-    <div id="App">
-      {<Header />}
-      <div id="main">
-        <div id="left">
-        {<Form data={data} plot={plot} info={info} />}
+    <HashRouter>
+      <div id="App">
+        {<Header />}
+        <div id="main">
+          <div id="left">
+          {<Form data={data} plot={plot} info={info} />}
+          </div>
+          {<Canvas/>}
+          {<RightPanel />}
         </div>
-        {<Canvas/>}
-        {<RightPanel />}
       </div>
-    </div>
+    </HashRouter>
   );
 }
 
