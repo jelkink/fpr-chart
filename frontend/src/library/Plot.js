@@ -6,9 +6,9 @@ import { linearRegression, minimum, maximum } from "./Stats"
 Chart.register(...registerables)
 Chart.register(BoxPlotController, BoxAndWiskers, LinearScale, CategoryScale)    
 
-const singleBarChart = function(var1) {
+const singleBarChart = function(var1, proportion) {
 
-    const table = tabulate(var1)
+    const table = tabulate(var1, true, proportion)
 
     return({
         labels: Object.keys(table),
@@ -22,9 +22,9 @@ const singleBarChart = function(var1) {
     })
 }
 
-const bivariateBarChart = function(var1, var2) {
+const bivariateBarChart = function(var1, var2, proportion) {
 
-    var tables = tabulate_bivariate(var1, var2)
+    var tables = tabulate_bivariate(var1, var2, proportion)
 
     return({
         labels: Object.keys(tabulate(var1)),
@@ -32,9 +32,9 @@ const bivariateBarChart = function(var1, var2) {
     })
 }
 
-const histogram = function(var1, bins) {
+const histogram = function(var1, bins, proportion) {
 
-    const table = bin(var1, bins)
+    const table = bin(var1, bins, proportion)
 
     return({
         labels: Object.keys(table),
@@ -141,7 +141,7 @@ class Plot {
         this.chart = null
     }
 
-    update(data, selectedGraph, selectedVar1, selectedVar2, selectedVar3, selectedVarSubset, selectedGroupSubset, subset, jitter, jitter_sd, bins, regression) {
+    update(data, selectedGraph, selectedVar1, selectedVar2, selectedVar3, selectedVarSubset, selectedGroupSubset, subset, proportion, jitter, jitter_sd, bins, regression) {
 
         const ctx = document.getElementById("chart")
 
@@ -177,25 +177,25 @@ class Plot {
             if (selectedGraph === "bar" & var1 !== null) {
 
                 if (var2 === null || selectedVar1 == selectedVar2) {
-                    data = singleBarChart(var1)
+                    data = singleBarChart(var1, proportion)
                     title = "Bar chart of " + selectedVar1 + title
                     labelX = var1.label
-                    labelY = "Frequency"
+                    labelY = proportion ? "Proportion" : "Frequency"
                     showLegend = false
                 } else {
-                    data = bivariateBarChart(var1, var2)
+                    data = bivariateBarChart(var1, var2, proportion)
                     title = "Bar chart of " + selectedVar2 + " by " + selectedVar1 + title
                     labelX = var1.label
-                    labelY = "Frequency"
+                    labelY = proportion ? "Proportion" : "Frequency"
                 }
             }
 
             if (selectedGraph === "histogram" & var1 !== null) {
 
-                data = histogram(var1, bins)
+                data = histogram(var1, bins, proportion)
                 title = "Histogram of " + selectedVar1 + title
                 labelX = var1.label
-                labelY = "Frequency"
+                labelY = proportion ? "Proportion" : "Frequency"
                 showLegend = false
             }
 

@@ -1,7 +1,13 @@
 import { rand_normal } from "../library/Stats"
 import { round } from "../library/FormatUtils"
 
-function tabulate(variable, labelled = true) {
+function make_proportion(table) {
+
+    let sum = table.reduce((acc, val) => acc + val)
+    return table.map((val) => val / sum)
+}
+
+function tabulate(variable, labelled = true, proportion = false) {
 
     var table = []
 
@@ -11,6 +17,11 @@ function tabulate(variable, labelled = true) {
         } else {
             table[variable.values[i].toString()] = 1
         }
+    }
+
+    if (proportion) {
+        
+        table = make_proportion(table)
     }
 
     if (variable.labels && labelled) {
@@ -26,7 +37,7 @@ function tabulate(variable, labelled = true) {
     }
 }
 
-function tabulate_bivariate(variable, groups) {
+function tabulate_bivariate(variable, groups, proportion = false) {
 
     const group_table = tabulate(groups, false)
     const group_table_labelled = tabulate(groups, true)
@@ -40,7 +51,7 @@ function tabulate_bivariate(variable, groups) {
         
         v.values = variable.values.filter((val, key) => groups.values[key].toString() == group_count[0])
 
-        tab.data = Object.values(tabulate(v, false))
+        tab.data = Object.values(tabulate(v, false, proportion))
         tab.label = Object.keys(group_table_labelled)[group_key]
         tab.type = "bar"
 
@@ -80,7 +91,7 @@ function subset_variable(variable, groups, subset) {
     }
 }
 
-function bin(variable, bins) {
+function bin(variable, bins, proportion = false) {
 
     var table = []
     var labelled_table = {}
@@ -106,6 +117,11 @@ function bin(variable, bins) {
     for (i = 0; i < variable.values.length; i++) {
         idx = variable.values[i] > max - binsize ? bins-1 : Math.floor((variable.values[i] - min) / binsize)
         table[idx] += 1
+    }
+
+    if (proportion) {
+        
+        table = make_proportion(table)
     }
 
     for (i = 0; i < bins; i++) {

@@ -12,6 +12,7 @@ function Form({data, plot, info}) {
     const [selectedVar3, setSelectedVar3] = useState('')
     const [selectedVarSubset, setSelectedVarSubset] = useState('')
     const [selectedGroupSubset, setSelectedGroupSubset] = useState('')
+    const [proportion, setProportion] = useState(false)
     const [jitter, setJitter] = useState(false)
     const [jitter_sd, setJitterSD] = useState(10)
     const [bins, setBins] = useState(10)
@@ -20,9 +21,9 @@ function Form({data, plot, info}) {
 
     useEffect(() => {
 
-        plot.update(data, selectedGraph, selectedVar1, selectedVar2, selectedVar3, selectedVarSubset, selectedGroupSubset, subset, jitter, jitter_sd, bins, regression)
+        plot.update(data, selectedGraph, selectedVar1, selectedVar2, selectedVar3, selectedVarSubset, selectedGroupSubset, subset, proportion, jitter, jitter_sd, bins, regression)
         info.updateVariableDescription(data, selectedVar1, selectedVar2, selectedVar3, selectedVarSubset)
-    }, [selectedGraph, selectedVar1, selectedVar2, selectedVar3, selectedVarSubset, selectedGroupSubset, subset, jitter, jitter_sd, bins, regression])
+    }, [selectedGraph, selectedVar1, selectedVar2, selectedVar3, selectedVarSubset, selectedGroupSubset, subset, proportion, jitter, jitter_sd, bins, regression])
 
     useEffect((e) => {
 
@@ -113,6 +114,15 @@ function Form({data, plot, info}) {
                 <h2>Options</h2>
 
                 <table><tbody>
+
+                    <tr>
+                        <td>
+                            Proportions 
+                        </td>
+                        <td>
+                            <input type="checkbox" checked={proportion} onChange={() => setProportion(!proportion)}/> on/off  
+                        </td>
+                    </tr>
                     
                      <tr>
                         <td>Bins</td>
