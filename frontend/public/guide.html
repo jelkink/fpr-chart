@@ -7,21 +7,51 @@
 
 <body>
 
-    <h1>Teaching Charts -- User Guide</h1>
+    <h1>Teaching Charts - User Guide</h1>
 
     <h2>Introduction</h2>
 
-    <p>Teaching Charts is a web interface for the production of basic plots, using small data sets for the purpose of teaching.</p>
+        <p>Teaching Charts is a web interface for the production of basic plots, using small data sets for the purpose of teaching.</p>
 
     <h2>Plots</h2>
 
-    
+        <h3>Bar charts</h3>
+
+            <p>Bar charts can be made using one or two variables. If only Variable 1 is selected, a univariate bar chart will be produced. When Variable 2 is also selected, the bars will be grouped based on the categories in Variable 2 and, for each group, the univariate distribution of Variable 1 will be displayed. Variable 3 will be ignored.</p>
+
+            <p>Two options have an impact on bar charts. The proportions switch allows you to switch between bar charts based on raw frequencies (or counts) to bar charts based on proportions. When both Variable 1 and 2 are selected, the proportions will be calculated within each category of Variable 2.</p>
+
+            <p>The second option that has an impact is the subsetting option, which is explained below.</p>
+
+        <h3>Histograms</h3>
+
+            <p>Histograms are in many respects similar to bar charts, but can only be utilized for single variables. Variables 2 and 3 are ignored.</p>
+
+            <p>In addition to the subsetting option (see below), the histogram can be customized based on the number of bins. The bins lever can be moved from using on one bin on the left, to twenty bins on the right. The proportions switch also impacts on histograms and works identically do the bar charts.</p>
+
+            <p>A small technicality: the bins of the histogram are defined such that the range is inclusive of the lower bound and exclusive of the upper bound, except for the last bin, which is also inclusive of the upper bound.</p>
+
+        <h3>Scatter plots</h3>
+
+            <p>Scatter plots are based on Variables 1 (y-axis) and 2 (x-axis), while Variable 3 is ignored, unless a regression line is added.</p>
+
+            <p>In addition to the subsetting option (see below), scatter plots have two main options to customize the graph: jittering and regression lines. With the jittering option, the points on the scatter plot will be randomly moved by a small amount, so that it is revealed where many points overlap. This is particularly useful for survey data, where each variable typically only has a limited number of possible values, even when we treat it as a scale level variable. The amount of random noise that is added can be manipulated with the associated lever.</p>
+
+            <p>The second helpful option is the possibility to add a linear regression line, based on ordinary least squares estimation. A simple click on the switch adds the regression line to the plot. Here, when Variable 3 is selected, different regression lines are computed for each of the categories on Variable 3, as outlined in the legend below the plot.</p>
+
+        <h3>Box plots</h3>
+
+            <p>Box plots can be either used for a univariate plot by only selecting Variable 1, or as a bivariate plot with plots on the categories of Variable 2 side by side, or as a trivariate plot, with for each of the categories of Variable 2, different colors based on the categories of Variable 3.</p>
+
+            <p>Only the subsetting option has an impact on box plots.</p>
+
+        <h3>Subsetting</h3>
 
     <h2>Data sets</h2>
 
-    <h3>Irish National Election Study 2020</h3>
+        <h3>Irish National Election Study 2020</h3>
 
-    <p>This data set is a random subsample of the Irish National Election Study 2020 available on the <a href="https://dataverse.harvard.edu/dataverse/ines2020">Harvard Dataverse repository</a>. After a selection of variables and a random sample of cases are determined, any missing data has been interpolated preserving the univariate distribution---but not taking into account the joint distribution with other variables.</p>
+            <p>This data set is a random subsample of the Irish National Election Study 2020 available on the <a href="https://dataverse.harvard.edu/dataverse/ines2020">Harvard Dataverse repository</a>. After a selection of variables and a random sample of cases are determined, any missing data has been interpolated preserving the univariate distribution - but not taking into account the joint distribution with other variables.</p>
 
 </body>
 </html>
