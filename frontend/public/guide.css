@@ -1,0 +1,42 @@
+:root {
+    --black: #221E1D;
+    --white: #ECEAE0;
+    --gray: #878787;
+    --red: #E9633B;
+    --blue: #6265f4;
+}
+
+html {
+    color: var(--black);
+    font-family: "Helvetica", sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+body {
+    background-color: var(--white);
+    margin-top: 40px;
+    margin-bottom: 20px;
+    margin-left: 75px;
+    margin-right: 75px;
+    font-size: 15px;
+    line-height: 1.4667;
+}
+
+#header {
+    text-align: center;
+}
+
+h1 {
+    text-align: center;
+}
+
+a:link, a:visited {
+    color: var(--blue);
+    text-decoration: none;
+    transition: background-color .15s linear, color .15s linear;
+}
+
+a:hover {
+    color: var(--red);
+}
+

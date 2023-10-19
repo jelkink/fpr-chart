@@ -1,5 +1,23 @@
+:root {
+  --black: #221E1D;
+  --white: #ECEAE0;
+  --gray: #878787;
+  --red: #E9633B;
+  --blue: #6265f4;
+}
+
 body {
-  background-color: #ffffff;
+  background-color: var(--white);
+}
+
+a:link, a:visited {
+  color: var(--blue);
+  text-decoration: none;
+  transition: background-color .15s linear, color .15s linear;
+}
+
+a:hover {
+  color: var(--red);
 }
 
 #header {
@@ -31,8 +49,8 @@ body {
 }
 
 .status {
-  background-color: #000000;
-  color: #00ff00;
+  background-color: var(--black);
+  color: var(--red);
 }
 
 .App-logo {

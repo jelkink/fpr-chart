@@ -25,6 +25,7 @@ function App() {
         {<Header />}
         <div id="main">
           <div id="left">
+            <p><a href="guide.html" target="_blank">User guide</a></p>
           {<Form data={data} plot={plot} info={info} />}
           </div>
           {<Canvas/>}
