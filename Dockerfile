@@ -24,5 +24,7 @@ RUN npm install
 # create production build
 RUN npm run build
 
+RUN ln -s /web/frontend/teachingcharts /web/frontend/teachingcharts/teachingcharts
+
 # start app
-CMD serve -s teachingcharts
+CMD serve teachingcharts --debug > /var/log/serve_log.txt 2>&1
